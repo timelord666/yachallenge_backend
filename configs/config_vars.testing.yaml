@@ -7,4 +7,4 @@ is-testing: true
 server-port: 8080
 
 # ya_challenge_db_1 is the service name + _ + filename of the db_1.sql
-dbconnection: 'postgresql://testsuite@localhost:15433/ya_challenge_db_1'
+dbconnection: 'postgresql://testsuite@localhost:5432/ya_challenge_db_1'

@@ -1,6 +1,6 @@
 openapi: "3.0.2"
 info:
-    title: UrlShortener API
+    title: YaChallenge API
     version: "1.0"
 servers:
     - url: http://localhost:8080/

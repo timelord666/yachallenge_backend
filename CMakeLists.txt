@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(pg_service_template CXX)
+project(ya_challenge CXX)
 
 
 # Adding userver dependency

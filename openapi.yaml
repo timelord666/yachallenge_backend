@@ -55,7 +55,6 @@ components:
                 - categories
                 - nickname
                 - password
-                - androidToken
         
         challenge:
             type: object
@@ -74,6 +73,7 @@ components:
                 
                 score:
                     type: number
+
 
         completedChallenge:
             type: object
@@ -137,14 +137,25 @@ paths:
                             properties:
                                 email:
                                     type: string
+                                    required: true
+
                                 nickname:
                                     type: string
+                                    required: true
+
                                 password:
                                     type: string
+                                    required: true
+
                                 categories:
                                     type: array
                                     items:
                                         type: string
+                                    required: true
+
+                                androidToken:
+                                    type: string
+
                                             
 
                 responses:
@@ -180,8 +191,14 @@ paths:
                         schema:
                             type: object
                             properties:
+                                androidToken:
+                                    type: string
+                                    
                                 email:
                                     type: string
+                                    required: true
+
                                 password:
                                     type: string
+                                    required: true
                         

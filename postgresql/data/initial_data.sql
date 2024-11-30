@@ -1,9 +1,9 @@
-INSERT INTO YaChallenge.Category (Title)
+INSERT INTO yaChallenge.category (title)
 VALUES
     ('Sport'),
     ('Music'),
     ('Technology'),
     ('Art'),
     ('Science')
-ON CONFLICT (Title)
+ON CONFLICT (title)
 DO NOTHING;

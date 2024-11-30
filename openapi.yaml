@@ -1,0 +1,187 @@
+openapi: "3.0.2"
+info:
+    title: UrlShortener API
+    version: "1.0"
+servers:
+    - url: http://localhost:8080/
+components:
+    schemas:
+        error:
+            type: object
+            properties:
+                detail:
+                    description: error message
+                    type: string
+                    required: true
+        category:
+            type: object
+            properties:
+                uid:
+                    type: string
+                    description: The unique identifier for the category.
+                title:
+                    type: string
+                    description: The title of the category.
+            required:
+                - uid
+                - title
+
+        user:
+            type: object
+            properties:
+                uid:
+                    type: string
+
+                email:
+                    type: string
+
+                categories:
+                    type: array
+                    items:
+                        type: string
+
+                nickname:
+                    type: string
+
+                password:
+                    type: string
+
+                androidToken:
+                    type: string
+                
+            required:
+                - uid
+                - email
+                - categories
+                - nickname
+                - password
+                - androidToken
+        
+        challenge:
+            type: object
+            properties:
+                uid:
+                    type: string
+
+                title:
+                    type: string
+
+                description:
+                    type: string
+
+                category:
+                    type: string
+                
+                score:
+                    type: number
+
+        completedChallenge:
+            type: object
+            properties:
+                uid:
+                    type: string
+
+                challengeUid: 
+                    type: string
+
+                userUid:
+                    type: string
+                
+                score:
+                    type: number
+                
+                createdAt:
+                    type: string             
+
+
+paths:
+    v1/categories:
+        get:
+            description: "get categories"
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/category"
+            
+
+    v1/categories/{uid}:
+        get: 
+            description: "get category by id"
+            parameters:
+                - name: uid
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                  description: "id of category"
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/category"
+
+    v1/users:
+        post:
+            description: "create user"
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                nickname:
+                                    type: string
+                                password:
+                                    type: string
+                                categories:
+                                    type: array
+                                    items:
+                                        type: string
+                                            
+
+                responses:
+                    '200':
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: "#/components/schemas/user"
+    
+    v1/challenges:
+        get:
+            description: "get challenge"
+            parameters:
+                - name: category
+                  in: query
+                  required: false
+                  schema:
+                        type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schema/challenge"
+
+    v1/login:
+        post:
+            description: 'login'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                password:
+                                    type: string
+                        

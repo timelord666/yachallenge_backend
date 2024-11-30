@@ -12,7 +12,9 @@ components:
                 detail:
                     description: error message
                     type: string
-                    required: true
+            required:
+              - detail
+
         category:
             type: object
             properties:
@@ -95,11 +97,12 @@ components:
 
 
 paths:
-    v1/categories:
+    /v1/categories:
         get:
             description: "get categories"
             responses:
                 "200":
+                    description: "successfully got categories"
                     content:
                         application/json:
                             schema:
@@ -108,7 +111,7 @@ paths:
                                     $ref: "#/components/schemas/category"
             
 
-    v1/categories/{uid}:
+    /v1/categories/{uid}:
         get: 
             description: "get category by id"
             parameters:
@@ -120,12 +123,13 @@ paths:
                   description: "id of category"
             responses:
                 "200":
+                    description: "got category by id"
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/category"
 
-    v1/users:
+    /v1/users:
         post:
             description: "create user"
             requestBody:
@@ -137,35 +141,36 @@ paths:
                             properties:
                                 email:
                                     type: string
-                                    required: true
 
                                 nickname:
                                     type: string
-                                    required: true
 
                                 password:
                                     type: string
-                                    required: true
 
                                 categories:
                                     type: array
                                     items:
                                         type: string
-                                    required: true
 
                                 androidToken:
                                     type: string
-
+                            required:
+                              - email
+                              - nickname
+                              - password
+                              - categories
                                             
 
-                responses:
-                    '200':
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/user"
+            responses:
+                '200':
+                    description: "user was created"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/user"
     
-    v1/challenges:
+    /v1/challenges:
         get:
             description: "get challenge"
             parameters:
@@ -176,12 +181,13 @@ paths:
                         type: string
             responses:
                 "200":
+                    description: "get challenge"
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schema/challenge"
+                                $ref: "#/components/schemas/challenge"
 
-    v1/login:
+    /v1/login:
         post:
             description: 'login'
             requestBody:
@@ -196,9 +202,18 @@ paths:
                                     
                                 email:
                                     type: string
-                                    required: true
 
                                 password:
                                     type: string
-                                    required: true
-                        
+
+                            required:
+                              - email
+                              - password
+            responses:
+              "200":
+                description: "login successful"
+                content:
+                  application/json:
+                    schema:
+                        $ref: '#/components/schemas/user'
+

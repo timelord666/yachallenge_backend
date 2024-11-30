@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS yaChallenge.category (
 CREATE TABLE IF NOT EXISTS yaChallenge.challenge (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR(255) NOT NULL, 
+    imageUrl TEXT,
     description TEXT NOT NULL, 
     category UUID REFERENCES yaChallenge.category (id) ON DELETE SET NULL,
     score INT NOT NULL

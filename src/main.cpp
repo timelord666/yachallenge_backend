@@ -22,8 +22,9 @@ int main(int argc, char* argv[]) {
           .Append<userver::components::Postgres>("postgres-db-1")
           .Append<userver::clients::dns::Component>();
 
+
   ya_challenge::AppendHello(component_list);
-  ya_challenge::AppendRegisterUser(component_list);
+
   ya_challenge::AppendGetCategories(component_list);
   ya_challenge::AppendGetChallenges(component_list);
 

@@ -72,7 +72,7 @@ if(DEFINED ENV{PREFIX})
   message(STATUS "Set install prefix: $ENV{PREFIX}")
   file(TO_CMAKE_PATH "$ENV{PREFIX}" PREFIX_PATH)
   set(CMAKE_INSTALL_PREFIX ${PREFIX_PATH})
-endif()`
+endif()
 
 file(GLOB CONFIGS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/configs/*.yaml ${CMAKE_CURRENT_SOURCE_DIR}/configs/*.json)
 

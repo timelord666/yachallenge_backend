@@ -8,7 +8,7 @@
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 #include <userver/crypto/hash.hpp>
-
+#include <iostream> 
 #include "../../../models/user.hpp"
 using namespace std;
 
@@ -52,7 +52,7 @@ namespace {
 
             auto userResult = pg_cluster_->Execute(
                 userver::storages::postgres::ClusterHostType::kMaster,
-                "SELECT * FROM yaChallenge.users WHERE email = $1",
+                "SELECT id, password FROM yaChallenge.users WHERE email = $1",
                 email
             );
 
@@ -68,7 +68,8 @@ namespace {
                 std::string password;
             };
             auto user = userResult.AsSingleRow<User>(userver::storages::postgres::kRowTag);
-
+            std::cout << password << "sending password" << std::endl;
+            std::cout << user.password << "user password" << std::endl;
             if (password != user.password) {
                 auto& response = request.GetHttpResponse();
                 response.SetStatus(userver::server::http::HttpStatus::kUnauthorized);

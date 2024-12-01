@@ -1,15 +1,16 @@
+#include "register.hpp"
+
+#include <fmt/format.h>
 #include <userver/crypto/hash.hpp>
 #include <userver/formats/json.hpp>
+#include <userver/storages/postgres/cluster.hpp>
+#include <userver/storages/postgres/component.hpp>
+
+#include <userver/clients/dns/component.hpp>
+#include <userver/components/component.hpp>
+
 #include <userver/server/handlers/http_handler_base.hpp>
 #include <userver/storages/postgres/cluster.hpp>
-#include <userver/components/component_context.hpp>
-#include <userver/server/handlers/http_handler_base.hpp>
-#include <userver/server/http/http_status.hpp>
-#include <userver/storages/postgres/component.hpp>
-#include <userver/components/component_list.hpp>
-#include <userver/utils/assert.hpp>
-
-
 namespace ya_challenge {
 namespace {
 class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
@@ -21,37 +22,47 @@ class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
       : HttpHandlerBase(config, context),
         pg_cluster_(
             context
-	    	.FindComponent<userver::components::Postgres>("postgres-db-1")
+                .FindComponent<userver::components::Postgres>("postgres-db-1")
                 .GetCluster()) {}
 
   std::string HandleRequestThrow(
       const userver::server::http::HttpRequest& request,
       userver::server::request::RequestContext&) const override {
-    const auto& email = request.GetFormDataArg("email").value;
-    const auto& password = request.GetFormDataArg("password").value;
-    const auto& nickname = request.GetFormDataArg("nickname").value;
+    auto request_body =
+        userver::formats::json::FromString(request.RequestBody());
+    auto email = request_body["email"].As<std::optional<std::string>>();
+    auto nickname = request_body["nickname"].As<std::optional<std::string>>();
+    auto password = request_body["password"].As<std::optional<std::string>>();
+    auto token = request_body["androidToken"].As<std::optional<std::string>>();
+    auto categories = request_body["categories"].As<std::optional<std::vector<std::string>>>();
 
-    if (email.empty() || password.empty()) {
-      throw userver::server::handlers::ClientError("Missing required fields");
+    if (!email|| !password || !nickname || !categories) {
+      auto& response = request.GetHttpResponse();
+      response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
+      return {};
     }
 
-    auto hashed_password = userver::crypto::hash::Sha256(password);
+    auto hashed_password = userver::crypto::hash::Sha256(password.value());
+    auto uuid = GenerateUuid();
 
-    auto result = pg_cluster_->Execute(userver::storages::postgres::ClusterHostType::kMaster,
-                         "INSERT INTO yaChallenge.user (email, password, nickname) "
-                         "VALUES ($1, $2, $3) "
-			 "ON CONFLICT DO NOTHING "
-        		 "RETURNING user.id",
-                         email, hashed_password, nickname);
-
-    if (result.IsEmpty()) {
-        // If no row is returned, the user already exists
-        request.SetResponseStatus(userver::server::http::HttpStatus::kConflict);
-        return "User already exists";
+    auto user_result = pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kMaster,
+        "SELECT COUNT(*) FROM User WHERE Email = $1", email);
+    if (user_result.AsSingleRow<int>() > 0) {
+      auto& response = request.GetHttpResponse();
+      response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
+      return {};
     }
+
+    pg_cluster_->Execute(userver::storages::postgres::ClusterHostType::kMaster,
+                         "INSERT INTO User (id, email, password, nickname, categories, androidToken) "
+                         "VALUES ($1, $2, $3, $4, $5, $6)",
+                         uuid, email.value(), hashed_password,
+                         nickname, categories.value(),
+                         token.value_or(nullptr));
 
     userver::formats::json::ValueBuilder response;
-    response["id"] = result.AsSingleRow<std::string>();
+    response["id"] = uuid;
 
     return userver::formats::json::ToString(response.ExtractValue());
   }
@@ -59,11 +70,14 @@ class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
  private:
   userver::storages::postgres::ClusterPtr pg_cluster_;
 
+  static std::string GenerateUuid() {
+    return fmt::format("{}-{}", std::time(nullptr), rand());
+  }
 };
 
 }  // namespace
-
 void AppendRegisterUser(userver::components::ComponentList& component_list) {
   component_list.Append<RegisterUser>();
 }
+
 }  // namespace ya_challenge

@@ -8,7 +8,7 @@
 #include <userver/utils/daemon_run.hpp>
 
 #include "handlers/v1/get-categories/view.hpp"
-#include "handlers/v1/register/register.hpp"
+#include "handlers/v1/users/create/view.hpp"
 #include "hello.hpp"
 
 int main(int argc, char* argv[]) {

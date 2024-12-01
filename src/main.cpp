@@ -7,6 +7,8 @@
 
 #include "hello.hpp"
 
+#include "handlers/v1/get-categories/view.hpp"
+
 int main(int argc, char* argv[]) {
   auto component_list = userver::components::MinimalServerComponentList()
                             .Append<userver::server::handlers::Ping>()
@@ -15,6 +17,7 @@ int main(int argc, char* argv[]) {
                             .Append<userver::server::handlers::TestsControl>();
 
   ya_challenge::AppendHello(component_list);
+  ya_challenge::AppendGetCategories(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

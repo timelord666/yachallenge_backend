@@ -29,10 +29,9 @@ class GetCategories final : public userver::server::handlers::HttpHandlerBase {
   std::string HandleRequestThrow(
       const userver::server::http::HttpRequest& request,
       userver::server::request::RequestContext&) const override {
-
     auto result = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kMaster,
-        "select id::text, imageUrl, title from yaChallenge.category");
+        "select id::text, imageUrl, title from yaChallenge.categories");
 
     if (result.IsEmpty()) {
       auto& response = request.GetHttpResponse();

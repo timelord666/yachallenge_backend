@@ -12,6 +12,4 @@ struct User {
   std::string nickname;
   std::vector<std::string> categories;
 };
-
-
 }

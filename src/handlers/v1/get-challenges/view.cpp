@@ -43,6 +43,8 @@ class GetChallenges final : public userver::server::handlers::HttpHandlerBase {
 
     userver::formats::json::ValueBuilder response;
 
+    response["challenges"].Resize(0);
+
     for (auto challenge :
          result.AsSetOf<Challenge>(userver::storages::postgres::kRowTag)) {
       response["challenges"].PushBack(challenge);

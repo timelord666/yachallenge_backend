@@ -34,8 +34,15 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/lib/uuids.cpp
     src/models/category.cpp
     src/models/category.hpp
+    
     src/handlers/v1/get-categories/view.hpp
     src/handlers/v1/get-categories/view.cpp
+
+    src/models/challenge.hpp
+    src/models/challenge.cpp
+
+    src/handlers/v1/get-challenges/view.hpp
+    src/handlers/v1/get-challenges/view.cpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

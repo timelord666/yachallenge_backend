@@ -65,6 +65,11 @@ components_manager:
             method: GET
             task_processor: main-task-processor
 
+        handler-get-challenges:
+            path: /v1/challenges
+            method: GET
+            task_processor: main-task-processor
+
         postgres-db-1:
             dbconnection: $dbconnection
             dbconnection#env: DB_CONNECTION

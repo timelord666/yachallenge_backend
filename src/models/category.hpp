@@ -6,6 +6,7 @@
 namespace ya_challenge {
 struct Category {
   std::string id;
+  std::optional<std::string> imageUrl;
   std::string title;
 };
 
@@ -13,4 +14,4 @@ userver::formats::json::Value Serialize(
     const Category& data,
     userver::formats::serialize::To<userver::formats::json::Value>);
 
-}  // namespace yaChallenge
+}  // namespace ya_challenge

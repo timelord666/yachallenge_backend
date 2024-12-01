@@ -1,4 +1,4 @@
-INSERT INTO yaChallenge.category (title)
+INSERT INTO yaChallenge.categories (title)
 VALUES
     ('Sport'),
     ('Music'),

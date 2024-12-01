@@ -28,6 +28,16 @@ userver_setup_environment()
 add_library(${PROJECT_NAME}_objs OBJECT
     src/hello.hpp
     src/hello.cpp
+    src/handlers/v1/users/create/view.hpp
+    src/handlers/v1/users/create/view.cpp
+    src/lib/uuids.hpp
+    src/lib/uuids.cpp
+    src/models/category.cpp
+    src/models/category.hpp
+    src/handlers/v1/get-categories/view.hpp
+    src/handlers/v1/get-categories/view.cpp
+    src/handlers/v1/login/login.cpp
+    src/handlers/v1/login/login.cpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

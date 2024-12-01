@@ -1,14 +1,15 @@
+#pragma once
+
 #include <string>
-using namespace std;
+#include <vector>
+
 namespace ya_challenge {
 
 struct User {
-    string uuid;
-    string email;
-    string password;
-    string nickname;
-    vector<std::string> categories; 
+  std::string id;
+  std::string email;
+  std::string password;
+  std::string nickname;
+  std::vector<std::string> categories;
 };
-
-
 }

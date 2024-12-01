@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS yaChallenge.users (
 
 -- 2. Category table
 CREATE TABLE IF NOT EXISTS yaChallenge.categories (
-    id TEXT PRIMARY KEY DEFAULT uuid_generate_v4();
+    id TEXT PRIMARY KEY DEFAULT uuid_generate_v4(),
     imageUrl TEXT,
     title VARCHAR(255) UNIQUE NOT NULL
 );

@@ -58,8 +58,8 @@ class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
 };
 
 }  // namespace
-
-void AppendLoginUser(userver::components::ComponentList& component_list) {
-  component_list.Append<LoginUser>();
+void AppendRegisterUser(userver::components::ComponentList& component_list) {
+  component_list.Append<RegisterUser>();
 }
+
 }  // namespace ya_challenge

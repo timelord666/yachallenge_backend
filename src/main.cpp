@@ -6,7 +6,7 @@
 #include <userver/utils/daemon_run.hpp>
 
 #include "hello.hpp"
-#include "handlers/v1/login/login.hpp"
+#include "handlers/v1/register/register.hpp"
 
 int main(int argc, char* argv[]) {
   auto component_list = userver::components::MinimalServerComponentList()
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
                             .Append<userver::clients::dns::Component>();
 
   ya_challenge::AppendHello(component_list);
-  ya_challenge::AppendLoginUser(component_list);
+  ya_challenge::AppendRegisterUser(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

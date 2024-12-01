@@ -7,9 +7,13 @@
 #include <userver/testsuite/testsuite_support.hpp>
 #include <userver/utils/daemon_run.hpp>
 
-#include "hello.hpp"
+#include "handlers/v1/get-categories/view.hpp"
 #include "handlers/v1/register/register.hpp"
+<<<<<<< HEAD
 #include "handlers/v1/get-profile/view.hpp"
+=======
+#include "hello.hpp"
+>>>>>>> 16e51c97e327d5c4eed2f7c69a25d82686325918
 
 int main(int argc, char* argv[]) {
   auto component_list =
@@ -24,6 +28,7 @@ int main(int argc, char* argv[]) {
   ya_challenge::AppendGetProfile(component_list);
   ya_challenge::AppendHello(component_list);
   ya_challenge::AppendRegisterUser(component_list);
+  ya_challenge::AppendGetCategories(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

@@ -11,6 +11,8 @@
 
 #include <userver/server/handlers/http_handler_base.hpp>
 #include <userver/storages/postgres/cluster.hpp>
+
+#include "../../../lib/uuids.hpp"
 namespace ya_challenge {
 namespace {
 class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
@@ -43,26 +45,27 @@ class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
     }
 
     auto hashed_password = userver::crypto::hash::Sha256(password.value());
-    auto uuid = GenerateUuid();
 
-    auto user_result = pg_cluster_->Execute(
+    std::vector<boost::uuids::uuid> categories_uuids = ya_challenge::ConvertStringsToUuids(categories.value());
+
+    auto result = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kMaster,
-        "SELECT COUNT(*) FROM User WHERE Email = $1", email);
-    if (user_result.AsSingleRow<int>() > 0) {
+        "INSERT INTO yaChallenge.users(email, password, "
+        "nickname, categories, androidToken) "
+        "VALUES($1, $2, $3, $4, $5)"
+        "ON CONFLICT DO NOTHING "
+        "RETURNING id::text",
+        email.value(), hashed_password, nickname, categories_uuids,
+        token.value_or(""));
+
+    if (result.IsEmpty()) {
       auto& response = request.GetHttpResponse();
-      response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
+      response.SetStatus(userver::server::http::HttpStatus::kConflict);
       return {};
     }
 
-    pg_cluster_->Execute(userver::storages::postgres::ClusterHostType::kMaster,
-                         "INSERT INTO User (id, email, password, nickname, categories, androidToken) "
-                         "VALUES ($1, $2, $3, $4, $5, $6)",
-                         uuid, email.value(), hashed_password,
-                         nickname, categories.value(),
-                         token.value_or(nullptr));
-
     userver::formats::json::ValueBuilder response;
-    response["id"] = uuid;
+    response["id"] = result.AsSingleRow<std::string>();
 
     return userver::formats::json::ToString(response.ExtractValue());
   }
@@ -70,9 +73,6 @@ class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
  private:
   userver::storages::postgres::ClusterPtr pg_cluster_;
 
-  static std::string GenerateUuid() {
-    return fmt::format("{}-{}", std::time(nullptr), rand());
-  }
 };
 
 }  // namespace

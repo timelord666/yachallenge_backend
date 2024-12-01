@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS yaChallenge.users (
 
 -- 2. Category table
 CREATE TABLE IF NOT EXISTS yaChallenge.categories (
-    id TEXT PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id TEXT PRIMARY KEY DEFAULT uuid_generate_v4();
     imageUrl TEXT,
     title VARCHAR(255) UNIQUE NOT NULL
 );
@@ -26,14 +26,14 @@ CREATE TABLE IF NOT EXISTS yaChallenge.challenges (
     title VARCHAR(255) NOT NULL, 
     imageUrl TEXT,
     description TEXT NOT NULL, 
-    category UUID REFERENCES yaChallenge.categories (id) ON DELETE SET NULL,
+    category TEXT REFERENCES yaChallenge.categories (id) ON DELETE SET NULL,
     score INT NOT NULL
 );
 
 -- 4. CompletedChallenges table
 CREATE TABLE IF NOT EXISTS yaChallenge.completedChallenges (
     userId TEXT NOT NULL,
-    challengeId UUID NOT NULL,
+    challengeId TEXT NOT NULL,
     score INT NOT NULL,
     completedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (userId, challengeId),

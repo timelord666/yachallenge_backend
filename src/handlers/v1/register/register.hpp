@@ -6,4 +6,4 @@ namespace ya_challenge {
 
 void AppendRegisterUser(userver::components::ComponentList& component_list);
 
-}  // namespace bookmarker
+}  // namespace ya_challenge

@@ -1,6 +1,6 @@
+#include <iostream>
 #include <sstream>
 #include <unordered_map>
-#include <iostream>
 
 #include <userver/components/component_context.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
@@ -29,9 +29,21 @@ class GetCategories final : public userver::server::handlers::HttpHandlerBase {
   std::string HandleRequestThrow(
       const userver::server::http::HttpRequest& request,
       userver::server::request::RequestContext&) const override {
+    std::cout << "BEFOREEEEEEEEEEEEEEEEEEEEEEEEEEEEe"
+                 "\n";
+
     auto result = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kMaster,
-        "select * from yaChallenge.category");
+        "select id, imageUrl, title from yaChallenge.category");
+
+    if (result.IsEmpty()) {
+      auto& response = request.GetHttpResponse();
+      response.SetStatus(userver::server::http::HttpStatus::kNotFound);
+      return {};
+    }
+
+    std::cout << "AFFFTEEEEEEEEEEEEEEEEEEEEEEEEEEER"
+                 "\n";
 
     userver::formats::json::ValueBuilder response;
 

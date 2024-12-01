@@ -4,7 +4,7 @@ CREATE SCHEMA IF NOT EXISTS yaChallenge;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- 1. User table
-CREATE TABLE IF NOT EXISTS yaChallenge.user (
+CREATE TABLE IF NOT EXISTS yaChallenge.users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     email VARCHAR(255) UNIQUE NOT NULL,
     nickname VARCHAR(100) UNIQUE NOT NULL,
@@ -14,14 +14,14 @@ CREATE TABLE IF NOT EXISTS yaChallenge.user (
 );
 
 -- 2. Category table
-CREATE TABLE IF NOT EXISTS yaChallenge.category (
+CREATE TABLE IF NOT EXISTS yaChallenge.categories (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     imageUrl TEXT,
     title VARCHAR(255) UNIQUE NOT NULL
 );
 
 -- 3. Challenge table
-CREATE TABLE IF NOT EXISTS yaChallenge.challenge (
+CREATE TABLE IF NOT EXISTS yaChallenge.challenges (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR(255) NOT NULL, 
     imageUrl TEXT,

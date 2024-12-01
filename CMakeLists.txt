@@ -28,6 +28,10 @@ userver_setup_environment()
 add_library(${PROJECT_NAME}_objs OBJECT
     src/hello.hpp
     src/hello.cpp
+    src/handlers/v1/register/register.hpp
+    src/handlers/v1/register/register.cpp
+    src/lib/uuids.hpp
+    src/lib/uuids.cpp
     src/models/category.cpp
     src/models/category.hpp
     src/handlers/v1/get-categories/view.hpp
@@ -68,7 +72,7 @@ if(DEFINED ENV{PREFIX})
   message(STATUS "Set install prefix: $ENV{PREFIX}")
   file(TO_CMAKE_PATH "$ENV{PREFIX}" PREFIX_PATH)
   set(CMAKE_INSTALL_PREFIX ${PREFIX_PATH})
-endif()
+endif()`
 
 file(GLOB CONFIGS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/configs/*.yaml ${CMAKE_CURRENT_SOURCE_DIR}/configs/*.json)
 

@@ -28,8 +28,8 @@ userver_setup_environment()
 add_library(${PROJECT_NAME}_objs OBJECT
     src/hello.hpp
     src/hello.cpp
-    src/handlers/v1/register/register.hpp
-    src/handlers/v1/register/register.cpp
+    src/handlers/v1/users/create/view.hpp
+    src/handlers/v1/users/create/view.cpp
     src/lib/uuids.hpp
     src/lib/uuids.cpp
     src/models/category.cpp

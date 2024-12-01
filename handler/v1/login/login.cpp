@@ -12,7 +12,7 @@
 
 #include "../../../models/user.hpp"
 
-namespace bookmarker {
+namespace ya_challenge {
 
 namespace {
 
@@ -32,12 +32,20 @@ public:
         const userver::server::http::HttpRequest& request,
         userver::server::request::RequestContext&
     ) const override {
+        
         auto email = request.GetFormDataArg("email").value;
-        auto password = userver::crypto::hash::Sha256(request.GetFormDataArg("password").value);
+        auto password = request.GetFormDataArg("password").value_or("");
+
+        if (email.empty() || password.empty()) {
+            auto& response = request.GetHttpResponse();
+            response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
+            return "Missing email or password";
+        }
+        password = userver::crypto::hash::Sha256(password);
 
         auto userResult = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
-            "SELECT * FROM bookmarker.users "
+            "SELECT * FROM yaChallenge.user"
             "WHERE email = $1 ",
             email
         );
@@ -51,20 +59,12 @@ public:
         auto user = userResult.AsSingleRow<TUser>(userver::storages::postgres::kRowTag);
         if (password != user.password) {
             auto& response = request.GetHttpResponse();
-            response.SetStatus(userver::server::http::HttpStatus::kNotFound);
+            response.SetStatus(userver::server::http::HttpStatus::kUnauthorized);
             return {};
         }
 
-        auto result = pg_cluster_->Execute(
-            userver::storages::postgres::ClusterHostType::kMaster,
-            "INSERT INTO bookmarker.auth_sessions(user_id) VALUES($1) "
-            "ON CONFLICT DO NOTHING "
-            "RETURNING auth_sessions.id",
-            user.id
-        );
-
         userver::formats::json::ValueBuilder response;
-        response["id"] = result.AsSingleRow<std::string>();
+        response["id"] = user.id;
 
         return userver::formats::json::ToString(response.ExtractValue());
     }
@@ -73,10 +73,10 @@ private:
     userver::storages::postgres::ClusterPtr pg_cluster_;
 };
 
-}  // namespace
+}
 
 void AppendLoginUser(userver::components::ComponentList& component_list) {
     component_list.Append<LoginUser>();
 }
 
-}  // namespace bookmarker
+}

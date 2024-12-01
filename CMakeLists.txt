@@ -34,6 +34,9 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/lib/uuids.cpp
     src/models/category.cpp
     src/models/category.hpp
+    src/models/user.hpp
+    src/handlers/v1/get-profile/view.cpp
+    src/handlers/v1/get-profile/view.hpp
     src/handlers/v1/get-categories/view.hpp
     src/handlers/v1/get-categories/view.cpp
 )

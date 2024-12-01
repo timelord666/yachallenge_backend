@@ -9,6 +9,7 @@
 
 #include "handlers/v1/get-categories/view.hpp"
 #include "handlers/v1/register/register.hpp"
+#include "handlers/v1/get-profile/view.hpp"
 #include "hello.hpp"
 
 int main(int argc, char* argv[]) {
@@ -21,6 +22,7 @@ int main(int argc, char* argv[]) {
           .Append<userver::components::Postgres>("postgres-db-1")
           .Append<userver::clients::dns::Component>();
 
+  ya_challenge::AppendGetProfile(component_list);
   ya_challenge::AppendHello(component_list);
   ya_challenge::AppendRegisterUser(component_list);
   ya_challenge::AppendGetCategories(component_list);

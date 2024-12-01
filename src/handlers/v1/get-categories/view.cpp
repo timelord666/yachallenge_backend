@@ -16,7 +16,7 @@ namespace ya_challenge {
 namespace {
 class GetCategories final : public userver::server::handlers::HttpHandlerBase {
  public:
-  static constexpr std::string_view kName = "handler-get-bookmarks";
+  static constexpr std::string_view kName = "handler-get-categories";
 
   GetCategories(const userver::components::ComponentConfig& config,
                 const userver::components::ComponentContext& component_context)

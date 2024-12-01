@@ -55,7 +55,7 @@ components_manager:
             method: POST                  # It will only reply to POST requests.
             task_processor: main-task-processor  # Run it on CPU bound task processor
         
-        handler-get-bookmarks:
+        handler-get-categories:
             path: /v1/categories
             method: GET
             task_processor: main-task-processor

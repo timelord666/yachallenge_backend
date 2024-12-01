@@ -5,7 +5,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- 1. User table
 CREATE TABLE IF NOT EXISTS yaChallenge.user (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id TEXT PRIMARY KEY DEFAULT uuid_generate_v4(),
     email VARCHAR(255) UNIQUE NOT NULL,
     nickname VARCHAR(100) UNIQUE NOT NULL,
     androidToken TEXT,
@@ -15,14 +15,14 @@ CREATE TABLE IF NOT EXISTS yaChallenge.user (
 
 -- 2. Category table
 CREATE TABLE IF NOT EXISTS yaChallenge.category (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id TEXT PRIMARY KEY DEFAULT uuid_generate_v4(),
     imageUrl TEXT,
     title VARCHAR(255) UNIQUE NOT NULL
 );
 
 -- 3. Challenge table
 CREATE TABLE IF NOT EXISTS yaChallenge.challenge (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id TEXT PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR(255) NOT NULL, 
     imageUrl TEXT,
     description TEXT NOT NULL, 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS yaChallenge.challenge (
 
 -- 4. CompletedChallenges table
 CREATE TABLE IF NOT EXISTS yaChallenge.completedChallenges (
-    userId UUID NOT NULL,
+    userId TEXT NOT NULL,
     challengeId UUID NOT NULL,
     score INT NOT NULL,
     completedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

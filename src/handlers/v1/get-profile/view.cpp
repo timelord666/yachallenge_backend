@@ -7,7 +7,6 @@
 #include <userver/server/http/http_status.hpp>
 #include <userver/storages/postgres/cluster.hpp>
 #include <userver/storages/postgres/component.hpp>
-#include <userver/components/component_list.hpp>
 #include <userver/utils/assert.hpp>
 
 #include "../../../models/user.hpp"
@@ -46,8 +45,9 @@ public:
             return {};
         }
 
-        auto user = result.AsSingleRow<User>(userver::storages::postgres::kRowTag);
-        return userver::formats::json::ToString(userver::formats::json::ValueBuilder{user}.ExtractValue());
+       // auto user = result.AsSingleRow<User>(userver::storages::postgres::kRowTag);
+       // return userver::formats::json::ToString(userver::formats::json::ValueBuilder{user}.ExtractValue());
+    	return {};
     }
 
 private:

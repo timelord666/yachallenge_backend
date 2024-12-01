@@ -12,7 +12,9 @@ int main(int argc, char* argv[]) {
                             .Append<userver::server::handlers::Ping>()
                             .Append<userver::components::TestsuiteSupport>()
                             .Append<userver::components::HttpClient>()
-                            .Append<userver::server::handlers::TestsControl>();
+                            .Append<userver::server::handlers::TestsControl>()
+                            .Append<userver::components::Postgres>("postgres-db-1")
+                            .Append<userver::clients::dns::Component>();
 
   ya_challenge::AppendHello(component_list);
 

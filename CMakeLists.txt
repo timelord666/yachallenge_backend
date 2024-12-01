@@ -32,6 +32,10 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/handlers/v1/register/register.cpp
     src/lib/uuids.hpp
     src/lib/uuids.cpp
+    src/models/category.cpp
+    src/models/category.hpp
+    src/handlers/v1/get-categories/view.hpp
+    src/handlers/v1/get-categories/view.cpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

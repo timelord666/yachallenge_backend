@@ -59,6 +59,11 @@ components_manager:
             path: /v1/register
             method: POST
             task_processor: main-task-processor
+        
+        handler-get-categories:
+            path: /v1/categories
+            method: GET
+            task_processor: main-task-processor
 
         postgres-db-1:
             dbconnection: $dbconnection

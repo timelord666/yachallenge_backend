@@ -52,7 +52,7 @@ namespace {
 
             auto userResult = pg_cluster_->Execute(
                 userver::storages::postgres::ClusterHostType::kMaster,
-                "SELECT * FROM yaChallenge.user WHERE email = $1",
+                "SELECT * FROM yaChallenge.users WHERE email = $1",
                 email
             );
 

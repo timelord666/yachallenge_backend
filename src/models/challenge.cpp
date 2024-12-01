@@ -1,5 +1,6 @@
 #include "./challenge.hpp"
-
+#include <optional>
+#include <string>
 namespace ya_challenge {
 userver::formats::json::Value Serialize(
     const Challenge& data,
@@ -8,7 +9,11 @@ userver::formats::json::Value Serialize(
 
   item["id"] = data.id;
   item["title"] = data.title;
-  // item["imageUrl"] = data.imageUrl;
+
+  if (data.imageUrl) {
+    item["imageUrl"] = data.imageUrl.value();
+  }
+
   item["description"] = data.description;
   item["category"] = data.category;
   item["score"] = data.score;

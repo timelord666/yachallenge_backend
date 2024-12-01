@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
+#include <optional>
 
 #include <userver/formats/json/value_builder.hpp>
 
+using std::optional;
 using std::string;
 
 namespace ya_challenge {
@@ -10,7 +12,7 @@ namespace ya_challenge {
 struct Challenge {
   string id;
   string title;
-  std::optional<string> imageUrl;
+  optional<string> imageUrl;
   string description;
   string category;
   long int score;

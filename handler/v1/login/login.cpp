@@ -1,61 +1,82 @@
-#include <userver/crypto/hash.hpp>
-#include <userver/formats/json.hpp>
+#include "view.hpp"
+
+#include <fmt/format.h>
+
+#include <userver/components/component_context.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
+#include <userver/server/http/http_status.hpp>
 #include <userver/storages/postgres/cluster.hpp>
+#include <userver/storages/postgres/component.hpp>
+#include <userver/utils/assert.hpp>
+#include <userver/crypto/hash.hpp>
 
-namespace ya_challenge
-{
-    class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
-    public:
-        static constexpr std::string_view kName = "handler-register-user";
+#include "../../../models/user.hpp"
 
-        RegisterUser(const userver::components::ComponentConfig& config,
-                    const userver::components::ComponentContext& context)
-            : HttpHandlerBase(config, context),
+namespace bookmarker {
+
+namespace {
+
+class LoginUser final : public userver::server::handlers::HttpHandlerBase {
+public:
+    static constexpr std::string_view kName = "handler-login-user";
+
+    LoginUser(const userver::components::ComponentConfig& config,
+              const userver::components::ComponentContext& component_context)
+        : HttpHandlerBase(config, component_context),
             pg_cluster_(
-                context
-                    .FindComponent<userver::components::Postgres>("postgres-db")
+                component_context
+                    .FindComponent<userver::components::Postgres>("postgres-db-1")
                     .GetCluster()) {}
 
-        std::string HandleRequestThrow(
-            const userver::server::http::HttpRequest& request,
-            userver::server::request::RequestContext&) const override {
-            auto email = request.GetFormDataArg("email").value_or("");
-            auto password = request.GetFormDataArg("password").value_or("");
-            auto nickname = request.GetFormDataArg("nickname").value_or("");
+    std::string HandleRequestThrow(
+        const userver::server::http::HttpRequest& request,
+        userver::server::request::RequestContext&
+    ) const override {
+        auto email = request.GetFormDataArg("email").value;
+        auto password = userver::crypto::hash::Sha256(request.GetFormDataArg("password").value);
 
-            if (email.empty() || password.empty()) {
-                throw userver::server::handlers::ClientError("Missing required fields");
-            }
+        auto userResult = pg_cluster_->Execute(
+            userver::storages::postgres::ClusterHostType::kMaster,
+            "SELECT * FROM bookmarker.users "
+            "WHERE email = $1 ",
+            email
+        );
 
-            auto hashed_password = userver::crypto::hash::Sha256(password);
-            auto uuid = GenerateUuid();
-
-            auto user_result = pg_cluster_->Execute(
-                userver::storages::postgres::ClusterHostType::kMaster,
-                "SELECT COUNT(*) FROM User WHERE Email = $1", email);
-            if (user_result.AsSingleRow<int>() > 0) {
-                throw userver::server::handlers::ClientError("Email already registered");
-            }
-
-            pg_cluster_->Execute(
-                userver::storages::postgres::ClusterHostType::kMaster,
-                "INSERT INTO User (UUID, Email, Password, Nickname) VALUES ($1, $2, $3, $4)",
-                uuid, email, hashed_password, nickname);
-
-            userver::formats::json::ValueBuilder response;
-            response["message"] = "Registration successful";
-            response["user_uuid"] = uuid;
-
-            return userver::formats::json::ToString(response.ExtractValue());
+        if (userResult.IsEmpty()) {
+            auto& response = request.GetHttpResponse();
+            response.SetStatus(userver::server::http::HttpStatus::kNotFound);
+            return {};
         }
 
-    private:
-        userver::storages::postgres::ClusterPtr pg_cluster_;
-
-        static std::string GenerateUuid() {
-            return fmt::format("{}-{}", std::time(nullptr), rand());
+        auto user = userResult.AsSingleRow<TUser>(userver::storages::postgres::kRowTag);
+        if (password != user.password) {
+            auto& response = request.GetHttpResponse();
+            response.SetStatus(userver::server::http::HttpStatus::kNotFound);
+            return {};
         }
-    };
+
+        auto result = pg_cluster_->Execute(
+            userver::storages::postgres::ClusterHostType::kMaster,
+            "INSERT INTO bookmarker.auth_sessions(user_id) VALUES($1) "
+            "ON CONFLICT DO NOTHING "
+            "RETURNING auth_sessions.id",
+            user.id
+        );
+
+        userver::formats::json::ValueBuilder response;
+        response["id"] = result.AsSingleRow<std::string>();
+
+        return userver::formats::json::ToString(response.ExtractValue());
+    }
+
+private:
+    userver::storages::postgres::ClusterPtr pg_cluster_;
+};
+
+}  // namespace
+
+void AppendLoginUser(userver::components::ComponentList& component_list) {
+    component_list.Append<LoginUser>();
 }
 
+}  // namespace bookmarker

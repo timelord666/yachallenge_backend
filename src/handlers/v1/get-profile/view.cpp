@@ -45,8 +45,8 @@ public:
             return {};
         }
 
-       // auto user = result.AsSingleRow<User>(userver::storages::postgres::kRowTag);
-       // return userver::formats::json::ToString(userver::formats::json::ValueBuilder{user}.ExtractValue());
+       auto user = result.AsSingleRow<User>(userver::storages::postgres::kRowTag);
+       return userver::formats::json::ToString(userver::formats::json::ValueBuilder{user}.ExtractValue());
     	return {};
     }
 

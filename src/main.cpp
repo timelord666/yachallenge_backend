@@ -8,7 +8,7 @@
 #include <userver/utils/daemon_run.hpp>
 
 #include "handlers/v1/get-categories/view.hpp"
-
+#include "handlers/v1/users/create/view.hpp"
 #include "hello.hpp"
 
 int main(int argc, char* argv[]) {
@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 
 
   ya_challenge::AppendHello(component_list);
-
+  ya_challenge::AppendRegisterUser(component_list);
   ya_challenge::AppendGetCategories(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);

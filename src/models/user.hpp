@@ -15,7 +15,6 @@ struct User {
   std::optional<std::vector<std::string>> completedChallengeIds;
   std::vector<std::string> categories;
 };
-
 userver::formats::json::Value Serialize(const User& data, userver::formats::serialize::To<userver::formats::json::Value>);
 
 }

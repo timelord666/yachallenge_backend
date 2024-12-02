@@ -65,6 +65,11 @@ components_manager:
             method: GET
             task_processor: main-task-processor
 
+        handler-v1-get-profile:
+            path: /v1/get-profile
+            method: GET
+            task_processor: main-task-processor
+
         postgres-db-1:
             dbconnection: $dbconnection
             dbconnection#env: DB_CONNECTION

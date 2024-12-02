@@ -32,10 +32,31 @@ public:
     ) const override {
 
         const auto& id = request.GetPathArg("id");
+	if(id.empty()){
+	    auto& response = request.GetHttpResponse();
+            response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
+	    return {"Missing required param id"};
+	}
         auto result = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
-            "SELECT * FROM yaChallange.user "
-            "WHERE id = $1",
+	    "SELECT "
+   		 "u.id, "
+    		 "u.email, "
+    		 "u.password, "
+    		 "u.nickname, "
+    		 "u.categories, "
+    	    "COALESCE( "
+        	"( "
+            		"SELECT ARRAY_AGG(cc.challengeId) "
+            		"FROM yaChallenge.completedChallenges cc "
+            		"WHERE cc.userId = u.id "
+       		"), "
+            	"ARRAY[]::TEXT[] "
+    	    ") AS completedChallengeIds "
+	    "FROM " 
+            "yaChallenge.users u "
+            "WHERE "
+            "u.id = $1",
             id
         );
 
@@ -46,18 +67,18 @@ public:
         }
 
        auto user = result.AsSingleRow<User>(userver::storages::postgres::kRowTag);
+       userver::formats::json::ValueBuilder response;
        return userver::formats::json::ToString(userver::formats::json::ValueBuilder{user}.ExtractValue());
-    	return {};
     }
 
 private:
     userver::storages::postgres::ClusterPtr pg_cluster_;
 };
 
-}  // namespace
+}  
 
 void AppendGetProfile(userver::components::ComponentList& component_list) {
     component_list.Append<GetProfile>();
 }
 
-}  // namespace bookmarker
+}  

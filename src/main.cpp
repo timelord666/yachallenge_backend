@@ -10,6 +10,7 @@
 #include "handlers/v1/get-categories/view.hpp"
 #include "handlers/v1/users/create/view.hpp"
 #include "handlers/v1/get-profile/view.hpp"
+#include "handlers/v1/get-completed/view.hpp"
 #include "hello.hpp"
 #include "handlers/v1/login/login.hpp"
 
@@ -30,6 +31,6 @@ int main(int argc, char* argv[]) {
   ya_challenge::AppendGetCategories(component_list);
   ya_challenge::AppendGetProfile(component_list);
   ya_challenge::AppendLoginUser(component_list);
-
+  ya_challenge::AppendGetCompleted(component_list);
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

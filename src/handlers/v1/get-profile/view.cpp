@@ -35,26 +35,17 @@ public:
 	if(id.empty()){
 	    auto& response = request.GetHttpResponse();
             response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
-	    return {"Missing required param id"};
+	    return {};
 	}
         auto result = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
 	    "SELECT "
-   		 "u.id, "
-    		 "u.email, "
-    		 "u.password, "
-    		 "u.nickname, "
-    		 "u.categories, "
-    	    "COALESCE( "
-        	"( "
-            		"SELECT ARRAY_AGG(cc.challengeId) "
-            		"FROM yaChallenge.completedChallenges cc "
-            		"WHERE cc.userId = u.id "
-       		"), "
-            	"ARRAY[]::TEXT[] "
-    	    ") AS completedChallengeIds "
-	    "FROM " 
-            "yaChallenge.users u "
+   	    "u.id, "
+    	    "u.email, "
+	    "u.androidToken, "
+    	    "u.nickname, "
+    	    "u.categories "
+	    "FROM yaChallenge.users u "
             "WHERE "
             "u.id = $1",
             id

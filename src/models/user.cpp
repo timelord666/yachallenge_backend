@@ -8,8 +8,6 @@ userver::formats::json::Value Serialize(const User& user,
     item["id"] = user.id;
     item["email"] = user.email;
     item["nickname"] = user.nickname;
-    item["password"] = user.password;
-    item["completedChallengeIds"] = user.completedChallengeIds;
     item["androidToken"] = user.androidToken;
     item["categories"] = user.categories;
     return item.ExtractValue();

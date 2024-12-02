@@ -36,6 +36,10 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/models/category.hpp
     src/models/user.hpp
     src/models/user.cpp
+    src/models/completedChallenges.hpp
+    src/models/completedChallenges.cpp
+    src/handlers/v1/get-completed/view.cpp
+    src/handlers/v1/get-completed/view.hpp
     src/handlers/v1/get-profile/view.cpp
     src/handlers/v1/get-profile/view.hpp
     src/handlers/v1/get-categories/view.hpp

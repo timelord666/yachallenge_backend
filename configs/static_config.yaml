@@ -71,7 +71,12 @@ components_manager:
             task_processor: main-task-processor
 
         handler-v1-get-profile:
-            path: /v1/get-profile
+            path: /v1/get-profile/{id}
+            method: GET
+            task_processor: main-task-processor
+
+        handler-v1-get-completed:
+            path: /v1/get-completed/{id}
             method: GET
             task_processor: main-task-processor
 

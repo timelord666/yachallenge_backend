@@ -10,7 +10,7 @@
 #include "handlers/v1/get-categories/view.hpp"
 #include "handlers/v1/users/create/view.hpp"
 #include "handlers/v1/get-profile/view.hpp"
-#include "handlers/v1/get-completed/view.hpp"
+#include "handlers/v1/users/challenges/view.hpp"
 #include "hello.hpp"
 #include "handlers/v1/login/login.hpp"
 

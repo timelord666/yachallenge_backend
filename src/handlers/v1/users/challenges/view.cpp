@@ -9,14 +9,14 @@
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 
-#include "../../../models/completedChallenges.hpp"
+#include "../../../../models/completedChallenges.hpp"
 
 namespace ya_challenge {
 
 namespace {
 class GetCompleted final : public userver::server::handlers::HttpHandlerBase {
 public:
-    static constexpr std::string_view kName = "handler-v1-get-completed";
+    static constexpr std::string_view kName = "handler-v1-users-challenges";
 
     GetCompleted(const userver::components::ComponentConfig& config,
                 const userver::components::ComponentContext& component_context)

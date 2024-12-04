@@ -11,7 +11,6 @@ struct User {
   std::string email;
   std::string nickname;
   std::optional<std::string> androidToken;
-  std::vector<std::string> categories;
 };
 userver::formats::json::Value Serialize(const User& data, userver::formats::serialize::To<userver::formats::json::Value>);
 

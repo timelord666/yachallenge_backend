@@ -8,6 +8,7 @@
 #include <userver/storages/postgres/cluster.hpp>
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
+#include <userver/formats/serialize/common_containers.hpp>
 
 #include "../../../../models/completedChallenges.hpp"
 
@@ -59,22 +60,19 @@ public:
 	    "ON "
     		"cc.challengeId = c.id "
 	    "WHERE "
-    		"cc.userId = $1 "
-	    "GROUP BY "
-    		"cc.userId",
+    		"cc.userId = $1",
             id
         );
 
        
 	auto completedChallenges = result.AsOptionalSingleRow<CompletedChallenges>(userver::storages::postgres::kRowTag);
-       
        if (completedChallenges==std::nullopt || completedChallenges->count==0) {
-            auto& response = request.GetHttpResponse();
-            response.SetStatus(userver::server::http::HttpStatus::kNotFound);
-            return {};
+           userver::formats::json::ValueBuilder response;
+	   response["count"]=0;
+	   response["challenges"]= std::vector<userver::formats::json::Value>();
+	   return userver::formats::json::ToString(response.ExtractValue());
        }
        
-       userver::formats::json::ValueBuilder response;
        return userver::formats::json::ToString(userver::formats::json::ValueBuilder{completedChallenges}.ExtractValue());
     }
 

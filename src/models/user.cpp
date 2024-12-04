@@ -9,7 +9,6 @@ userver::formats::json::Value Serialize(const User& user,
     item["email"] = user.email;
     item["nickname"] = user.nickname;
     item["androidToken"] = user.androidToken;
-    item["categories"] = user.categories;
     return item.ExtractValue();
 }
 

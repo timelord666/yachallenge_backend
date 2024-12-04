@@ -16,7 +16,7 @@ namespace ya_challenge {
 namespace {
 class GetProfile final : public userver::server::handlers::HttpHandlerBase {
 public:
-    static constexpr std::string_view kName = "handler-v1-get-profile";
+    static constexpr std::string_view kName = "handler-v1-users-user";
 
     GetProfile(const userver::components::ComponentConfig& config,
                 const userver::components::ComponentContext& component_context)
@@ -44,7 +44,6 @@ public:
     	    "u.email, "
 	    "u.androidToken, "
     	    "u.nickname, "
-    	    "u.categories "
 	    "FROM yaChallenge.users u "
             "WHERE "
             "u.id = $1",

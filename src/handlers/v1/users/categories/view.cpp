@@ -63,12 +63,6 @@ public:
        
 	auto userCategories = result.AsOptionalSingleRow<UserCategories>(userver::storages::postgres::kRowTag);
        
-       if (userCategories==std::nullopt || userCategories->count==0) {
-           userver::formats::json::ValueBuilder response;
-           response["count"]=0;
-           response["categories"]= std::vector<userver::formats::json::Value>();
-           return userver::formats::json::ToString(response.ExtractValue());
-       }
        
        return userver::formats::json::ToString(userver::formats::json::ValueBuilder{userCategories}.ExtractValue());
     }

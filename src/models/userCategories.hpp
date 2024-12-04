@@ -8,7 +8,7 @@ namespace ya_challenge {
 
 struct UserCategories {
   int count;
-  std::vector<userver::formats::json::Value> categories;
+  std::optional<std::vector<userver::formats::json::Value>> categories;
 };
 userver::formats::json::Value Serialize(const UserCategories& data, userver::formats::serialize::To<userver::formats::json::Value>);
 

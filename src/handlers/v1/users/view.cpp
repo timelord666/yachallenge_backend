@@ -43,7 +43,7 @@ public:
    	    "u.id, "
     	    "u.email, "
 	    "u.androidToken, "
-    	    "u.nickname, "
+    	    "u.nickname "
 	    "FROM yaChallenge.users u "
             "WHERE "
             "u.id = $1",

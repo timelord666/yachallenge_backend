@@ -59,6 +59,11 @@ components_manager:
             path: /v1/users
             method: POST
             task_processor: main-task-processor
+
+        handler-login-user:
+            path: /v1/login
+            method: POST
+            task_processor: main-task-processor
         
         handler-get-categories:
             path: /v1/categories

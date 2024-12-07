@@ -91,6 +91,11 @@ components_manager:
             method: GET
             task_processor: main-task-processor
 
+        handler-v1-users-rankings:
+            path: /v1/users/rankings/{page}
+            method: GET
+            task_processor: main-task-processor
+        
         postgres-db-1:
             dbconnection: $dbconnection
             dbconnection#env: DB_CONNECTION

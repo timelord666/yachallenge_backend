@@ -33,10 +33,12 @@ class GetChallenges final : public userver::server::handlers::HttpHandlerBase {
     auto result = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kMaster,
         R"(
-          SELECT *
-          FROM yaChallenge.challenges
-          WHERE ($1 IS NULL OR category = $1)
-      )",
+        SELECT c.*, cat.title AS categoryTitle
+        FROM yaChallenge.challenges AS c
+        LEFT JOIN yaChallenge.categories AS cat
+          ON c.category = cat.id
+        WHERE ($1 IS NULL OR c.category = $1)
+    )",
         category.empty() ? std::nullopt : std::optional<std::string>(category));
 
     userver::formats::json::ValueBuilder response;

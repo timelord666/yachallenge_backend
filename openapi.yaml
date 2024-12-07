@@ -163,13 +163,16 @@ paths:
                                             
 
             responses:
-                '200':
-                    description: "user was created"
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/user"
-    
+              '200':
+                description: "user was created"
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                
     /v1/challenges:
         get:
             description: "get challenge"

@@ -175,6 +175,7 @@ components:
                       type: number
                   imageUrl:
                       type: string          
+
         user-rankings:
           type: array
           items:
@@ -185,7 +186,6 @@ components:
                     
               nickname:
                   type: string
-
 
 paths:
     /v1/categories:

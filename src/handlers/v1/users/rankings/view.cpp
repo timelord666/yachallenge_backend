@@ -32,7 +32,7 @@ public:
     ) const override {
 
         auto& page = request.GetPathArg("page");
-        int pageNum = page.empty() ? 1 : std::stoi(page);
+        int pageNum = std::stoi(page) <= 0 ? 0 : std::stoi(page) - 1;
         auto result = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
       		"SELECT "

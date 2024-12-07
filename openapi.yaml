@@ -3,7 +3,7 @@ info:
     title: YaChallenge API
     version: "1.0"
 servers:
-    - url: http://localhost:8080/
+    - url: http://localhost:8081/
 components:
     schemas:
         error:
@@ -144,7 +144,37 @@ components:
                     type: number
                 
                 createdAt:
-                    type: string             
+                    type: string   
+                    
+        user-challenges:
+          type: object
+          properties:
+            count:
+              type: number
+              description: how many categories the user has
+            challenges:
+              type: array
+              description: categories that the user has
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+
+                  title:
+                      type: string
+  
+                  description:
+                      type: string
+  
+                  category:
+                      type: string
+                      description: "category id"
+                  
+                  score:
+                      type: number
+                  imageUrl:
+                      type: string          
 
 
 paths:
@@ -299,5 +329,29 @@ paths:
                   application/json:
                     schema:
                       $ref: "#/components/schemas/user-categories"
+                      
+                      
+                      
+                      
+                      
                     
                     
+    /v1/users/{id}/challenges:
+        get:
+            description: "getting useers challenges"
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema: 
+                        type: string
+                        
+                        
+                    
+            responses: 
+              "200":
+                description: "returns challenges that user completed"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/user-challenges"

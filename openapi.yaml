@@ -176,6 +176,16 @@ components:
                   imageUrl:
                       type: string          
 
+        user-rankings:
+          type: array
+          items:
+            type: object
+            properties:
+              score:
+                  type: number
+                    
+              nickname:
+                  type: string
 
 paths:
     /v1/categories:
@@ -332,7 +342,24 @@ paths:
                       
                       
                       
-                      
+    /v1/users/rankings/{page}:
+        get:
+            description: "Get user rankings for a specific page"
+            parameters:
+                - name: page
+                  in: path
+                  required: false
+                  schema:
+                        type: string
+
+            responses:
+              "200":
+                description: "Successfully got user rankings for the requested page"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/user-rankings"
+                 
                       
                     
                     

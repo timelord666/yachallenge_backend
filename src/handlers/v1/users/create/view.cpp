@@ -54,7 +54,7 @@ class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
         "ON CONFLICT DO NOTHING "
         "RETURNING id",
         email.value(), hashed_password, nickname, categories,
-        token.value_or(""));
+        token.value());
 
     if (result.IsEmpty()) {
       auto& response = request.GetHttpResponse();

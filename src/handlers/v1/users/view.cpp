@@ -16,7 +16,7 @@ namespace ya_challenge {
 namespace {
 class GetProfile final : public userver::server::handlers::HttpHandlerBase {
 public:
-    static constexpr std::string_view kName = "handler-v1-get-profile";
+    static constexpr std::string_view kName = "handler-v1-users-user";
 
     GetProfile(const userver::components::ComponentConfig& config,
                 const userver::components::ComponentContext& component_context)
@@ -32,10 +32,21 @@ public:
     ) const override {
 
         const auto& id = request.GetPathArg("id");
+	if(id.empty()){
+	    auto& response = request.GetHttpResponse();
+            response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
+	    return {};
+	}
         auto result = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
-            "SELECT * FROM yaChallange.user "
-            "WHERE id = $1",
+	    "SELECT "
+   	    "u.id, "
+    	    "u.email, "
+	    "u.androidToken, "
+    	    "u.nickname "
+	    "FROM yaChallenge.users u "
+            "WHERE "
+            "u.id = $1",
             id
         );
 
@@ -46,18 +57,18 @@ public:
         }
 
        auto user = result.AsSingleRow<User>(userver::storages::postgres::kRowTag);
+       userver::formats::json::ValueBuilder response;
        return userver::formats::json::ToString(userver::formats::json::ValueBuilder{user}.ExtractValue());
-    	return {};
     }
 
 private:
     userver::storages::postgres::ClusterPtr pg_cluster_;
 };
 
-}  // namespace
+}  
 
 void AppendGetProfile(userver::components::ComponentList& component_list) {
     component_list.Append<GetProfile>();
 }
 
-}  // namespace bookmarker
+}  

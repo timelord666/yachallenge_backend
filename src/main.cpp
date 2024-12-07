@@ -12,6 +12,7 @@
 #include "handlers/v1/users/create/view.hpp"
 #include "handlers/v1/users/view.hpp"
 #include "handlers/v1/users/challenges/view.hpp"
+#include "handlers/v1/users/rankings/view.hpp"
 #include "handlers/v1/users/categories/view.hpp"
 #include "handlers/v1/complate-challenge/view.hpp"
 #include "hello.hpp"
@@ -29,17 +30,22 @@ int main(int argc, char* argv[]) {
           .Append<userver::clients::dns::Component>();
 
   ya_challenge::AppendHello(component_list);
+
+  //login-register
   ya_challenge::AppendRegisterUser(component_list);
+  ya_challenge::AppendLoginUser(component_list);
 
-  ya_challenge::AppendGetChallenges(component_list);
-
+  //users-info
   ya_challenge::AppendGetUserCategories(component_list);
   ya_challenge::AppendGetProfile(component_list);
-
-  ya_challenge::AppendLoginUser(component_list);
-  ya_challenge::AppendGetCategories(component_list);
   ya_challenge::AppendGetCompleted(component_list);
 
   ya_challenge::AppendCompletedChallenge(component_list);
+  ya_challenge::AppendGetRankings(component_list);
+
+  //app-data
+  ya_challenge::AppendGetCategories(component_list);
+  ya_challenge::AppendGetChallenges(component_list);
+
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

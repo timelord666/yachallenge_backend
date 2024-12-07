@@ -3,7 +3,7 @@ info:
     title: YaChallenge API
     version: "1.0"
 servers:
-    - url: http://localhost:8080/
+    - url: http://localhost:8081/
 components:
     schemas:
         error:
@@ -18,20 +18,67 @@ components:
         category:
             type: object
             properties:
-                uid:
+                id:
                     type: string
                     description: The unique identifier for the category.
                 title:
                     type: string
                     description: The title of the category.
+                image:
+                    type: string
+                    description: imgae of the category
             required:
-                - uid
+                - id
                 - title
+                
+        user-categories:
+          type: object
+          properties:
+            count:
+              type: number
+              description: how many categories the user has
+            categories:
+              type: array
+              description: categories that the user has
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  imageUrl:
+                    type: string
 
         user:
             type: object
             properties:
-                uid:
+                id:
+                    type: string
+
+                email:
+                    type: string
+
+
+
+                nickname:
+                    type: string
+
+
+
+                androidToken:
+                    type: string
+                
+            required:
+                - id
+                - email
+                - categories
+                - nickname
+                
+        user-register:
+            type: object
+            properties:
+                id:
                     type: string
 
                 email:
@@ -52,16 +99,16 @@ components:
                     type: string
                 
             required:
-                - uid
+                - id
                 - email
                 - categories
                 - nickname
-                - password
+                - password                
         
         challenge:
             type: object
             properties:
-                uid:
+                id:
                     type: string
 
                 title:
@@ -70,17 +117,21 @@ components:
                 description:
                     type: string
 
-                category:
+                categoryId:
+                    type: string
+                categoryTitle:
                     type: string
                 
                 score:
                     type: number
+                imageUrl:
+                    type: string
 
 
         completedChallenge:
             type: object
             properties:
-                uid:
+                id:
                     type: string
 
                 challengeUid: 
@@ -93,7 +144,37 @@ components:
                     type: number
                 
                 createdAt:
-                    type: string             
+                    type: string   
+                    
+        user-challenges:
+          type: object
+          properties:
+            count:
+              type: number
+              description: how many categories the user has
+            challenges:
+              type: array
+              description: categories that the user has
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+
+                  title:
+                      type: string
+  
+                  description:
+                      type: string
+  
+                  category:
+                      type: string
+                      description: "category id"
+                  
+                  score:
+                      type: number
+                  imageUrl:
+                      type: string          
 
 
 paths:
@@ -111,23 +192,6 @@ paths:
                                     $ref: "#/components/schemas/category"
             
 
-    /v1/categories/{uid}:
-        get: 
-            description: "get category by id"
-            parameters:
-                - name: uid
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                  description: "id of category"
-            responses:
-                "200":
-                    description: "got category by id"
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/category"
 
     /v1/users:
         post:
@@ -163,13 +227,18 @@ paths:
                                             
 
             responses:
-                '200':
-                    description: "user was created"
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/user"
-    
+              '200':
+                description: "user was created"
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          
+                          
+                
     /v1/challenges:
         get:
             description: "get challenge"
@@ -210,62 +279,79 @@ paths:
                               - email
                               - password
             responses:
-              "200":
-                description: "login successful"
+              '200':
+                description: "user was created"
                 content:
                   application/json:
                     schema:
-                        $ref: '#/components/schemas/user'
-
-    /v1/users/{userUid}/challenges/{challengeId}:
-    put:
-        description: "Mark a challenge as completed for a specific user"
-        parameters:
-            - name: userUid
-              in: path
-              required: true
-              schema:
-                type: string
-              description: "Unique identifier of the user"
-            - name: challengeId
-              in: path
-              required: true
-              schema:
-                type: string
-              description: "Unique identifier of the challenge"
-        responses:
-            "200":
-                description: "Challenge marked as completed"
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          
+                          
+                          
+    /v1/users/{id}:
+        get:
+            description: "get profile"
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema: 
+                        type: string
+                        
+            responses:
+                    "200": 
+                      description: "user profile"
+                      content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/user"
+                                
+                                
+    /v1/users/{id}/categories:
+        get:
+            description: "getting useers categoreies"
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema: 
+                        type: string
+                        
+                        
+                    
+            responses: 
+              "200":
+                description: "returns categories that user specified in registration"
                 content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/completedChallenge"
-            "400":
-                description: "Invalid request parameters"
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/error"
-            "404":
-                description: "User or Challenge not found"
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/error"
-        requestBody:
-            description: "Request body for completing a challenge"
-            required: true
-            content:
-                application/json:
+                  application/json:
                     schema:
-                        type: object
-                        properties:
-                            score:
-                                type: number
-                                description: "Score for completing the challenge"
-                                example: 10
-                        required:
-                            - score
-
-
-
+                      $ref: "#/components/schemas/user-categories"
+                      
+                      
+                      
+                      
+                      
+                    
+                    
+    /v1/users/{id}/challenges:
+        get:
+            description: "getting useers challenges"
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema: 
+                        type: string
+                        
+                        
+                    
+            responses: 
+              "200":
+                description: "returns challenges that user completed"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/user-challenges"

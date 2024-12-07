@@ -7,8 +7,12 @@ userver::formats::json::Value Serialize(
   userver::formats::json::ValueBuilder item;
   item["id"] = data.id;
   item["title"] = data.title;
+
+  if (data.imageUrl) {
+    item["imageUrl"] = data.imageUrl.value();
+  }
+
   return item.ExtractValue();
 };
 
-}  // namespace yaChallenge
-
+}  // namespace ya_challenge

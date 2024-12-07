@@ -32,7 +32,7 @@ namespace ya_challenge{
                 const userver::server::http::HttpRequest& request,
                 userver::server::request::RequestContext&) const override {
                 
-                const std::string& user_id = request.GetPathArg("userUid");
+                const std::string& user_id = request.GetPathArg("userId");
                 const std::string& challenge_id = request.GetPathArg("challengeId");
 
                 auto user_exists = pg_cluster_->Execute(

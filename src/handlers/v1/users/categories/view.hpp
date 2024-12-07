@@ -4,7 +4,7 @@
 
 namespace ya_challenge {
 
-void AppendGetProfile(userver::components::ComponentList& component_list);
+void AppendGetUserCategories(userver::components::ComponentList& component_list);
 
 }
-~           
+  

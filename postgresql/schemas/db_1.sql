@@ -9,8 +9,7 @@ CREATE TABLE IF NOT EXISTS yaChallenge.users (
     email VARCHAR(255) UNIQUE NOT NULL,
     nickname VARCHAR(100) UNIQUE NOT NULL,
     androidToken TEXT,
-    password TEXT NOT NULL,
-    categories TEXT[] DEFAULT ARRAY[]::TEXT[]
+    password TEXT NOT NULL
 );
 
 -- 2. Category table
@@ -30,11 +29,20 @@ CREATE TABLE IF NOT EXISTS yaChallenge.challenges (
     score INT NOT NULL
 );
 
--- 4. CompletedChallenges table
+-- 4. Categeories Many-to-Many
+
+CREATE TABLE IF NOT EXISTS yaChallenge.userCategories (
+    userId TEXT NOT NULL,
+    categoryId TEXT NOT NULL,
+    PRIMARY KEY (userId, categoryId),
+    FOREIGN KEY (userId) REFERENCES yaChallenge.users (id) ON DELETE CASCADE,
+    FOREIGN KEY (categoryId) REFERENCES yaChallenge.categories (id) ON DELETE CASCADE
+);
+
+-- 5. CompletedChallenges table
 CREATE TABLE IF NOT EXISTS yaChallenge.completedChallenges (
     userId TEXT NOT NULL,
     challengeId TEXT NOT NULL,
-    score INT NOT NULL,
     completedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (userId, challengeId),
     FOREIGN KEY (userId) REFERENCES yaChallenge.users (id) ON DELETE CASCADE,

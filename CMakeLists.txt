@@ -34,7 +34,18 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/lib/uuids.cpp
     src/models/category.cpp
     src/models/category.hpp
-    
+    src/models/user.hpp
+    src/models/user.cpp
+    src/models/completedChallenges.hpp
+    src/models/completedChallenges.cpp
+    src/models/userCategories.hpp
+    src/models/userCategories.cpp
+    src/handlers/v1/users/view.cpp
+    src/handlers/v1/users/view.hpp
+    src/handlers/v1/users/categories/view.cpp
+    src/handlers/v1/users/categories/view.hpp
+    src/handlers/v1/users/challenges/view.cpp
+    src/handlers/v1/users/challenges/view.hpp
     src/handlers/v1/get-categories/view.hpp
     src/handlers/v1/get-categories/view.cpp
 

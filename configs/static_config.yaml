@@ -70,8 +70,24 @@ components_manager:
             method: GET
             task_processor: main-task-processor
 
+
         handler-get-challenges:
             path: /v1/challenges
+            method: GET
+            task_processor: main-task-processor
+
+        handler-v1-users-user:
+            path: /v1/users/{id}
+            method: GET
+            task_processor: main-task-processor
+
+        handler-v1-users-categories:
+            path: /v1/users/{id}/categories
+            method: GET
+            task_processor: main-task-processor
+        
+        handler-v1-users-challenges:
+            path: /v1/users/{id}/challenges
             method: GET
             task_processor: main-task-processor
 

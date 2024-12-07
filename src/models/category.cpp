@@ -9,4 +9,6 @@ userver::formats::json::Value Serialize(
   item["title"] = data.title;
   return item.ExtractValue();
 };
-}  // namespace ya_challenge
+
+}  // namespace yaChallenge
+

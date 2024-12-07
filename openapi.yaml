@@ -3,7 +3,7 @@ info:
     title: YaChallenge API
     version: "1.0"
 servers:
-    - url: http://localhost:8080/
+    - url: http://localhost:8081/
 components:
     schemas:
         error:
@@ -28,8 +28,27 @@ components:
                     type: string
                     description: imgae of the category
             required:
-                - uid
+                - id
                 - title
+                
+        user-categories:
+          type: object
+          properties:
+            count:
+              type: number
+              description: how many categories the user has
+            categories:
+              type: array
+              description: categories that the user has
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  imageUrl:
+                    type: string
 
         user:
             type: object
@@ -51,11 +70,10 @@ components:
                     type: string
                 
             required:
-                - uid
+                - id
                 - email
                 - categories
                 - nickname
-                - password
                 
         user-register:
             type: object
@@ -81,7 +99,7 @@ components:
                     type: string
                 
             required:
-                - uid
+                - id
                 - email
                 - categories
                 - nickname
@@ -126,7 +144,47 @@ components:
                     type: number
                 
                 createdAt:
-                    type: string             
+                    type: string   
+                    
+        user-challenges:
+          type: object
+          properties:
+            count:
+              type: number
+              description: how many categories the user has
+            challenges:
+              type: array
+              description: categories that the user has
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+
+                  title:
+                      type: string
+  
+                  description:
+                      type: string
+  
+                  category:
+                      type: string
+                      description: "category id"
+                  
+                  score:
+                      type: number
+                  imageUrl:
+                      type: string          
+        user-rankings:
+          type: array
+          items:
+            type: object
+            properties:
+              score:
+                  type: number
+                    
+              nickname:
+                  type: string
 
 
 paths:
@@ -260,3 +318,67 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/user"
+                                
+                                
+    /v1/users/{id}/categories:
+        get:
+            description: "getting useers categoreies"
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema: 
+                        type: string
+                        
+                        
+                    
+            responses: 
+              "200":
+                description: "returns categories that user specified in registration"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/user-categories"
+                      
+                      
+                      
+    /v1/users/rankings/{page}:
+        get:
+            description: "Get user rankings for a specific page"
+            parameters:
+                - name: page
+                  in: path
+                  required: false
+                  schema:
+                        type: string
+
+            responses:
+              "200":
+                description: "Successfully got user rankings for the requested page"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/user-rankings"
+                 
+                      
+                    
+                    
+    /v1/users/{id}/challenges:
+        get:
+            description: "getting useers challenges"
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema: 
+                        type: string
+                        
+                        
+                    
+            responses: 
+              "200":
+                description: "returns challenges that user completed"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/user-challenges"

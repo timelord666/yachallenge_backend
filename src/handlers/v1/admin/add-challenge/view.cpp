@@ -57,8 +57,8 @@ public:
                 "category_id.id, "
                 "$5 "
 	    "FROM category_id "
+	    "WHERE category_id.id IS NOT NULL "
 	    "ON CONFLICT DO NOTHING "
-            "WHERE category_id.id IS NOT NULL "
 	    "RETURNING id", title, imageUrl, description, category, score
         );
 	if(result.IsEmpty()){

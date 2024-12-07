@@ -34,21 +34,13 @@ components:
         user:
             type: object
             properties:
-                uid:
+                id:
                     type: string
 
                 email:
                     type: string
 
-                categories:
-                    type: array
-                    items:
-                        type: string
-
                 nickname:
-                    type: string
-
-                password:
                     type: string
 
                 androidToken:
@@ -87,7 +79,7 @@ components:
         completedChallenge:
             type: object
             properties:
-                uid:
+                id:
                     type: string
 
                 challengeUid: 
@@ -162,6 +154,8 @@ paths:
                       properties:
                         id:
                           type: string
+                          
+                          
                 
     /v1/challenges:
         get:
@@ -212,4 +206,23 @@ paths:
                       properties:
                         id:
                           type: string
-
+                          
+                          
+                          
+    /v1/users/{id}:
+        get:
+            description: "get profile"
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema: 
+                        type: string
+                        
+            responses:
+                    "200": 
+                      description: "user profile"
+                      content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/user"

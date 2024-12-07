@@ -28,8 +28,27 @@ components:
                     type: string
                     description: imgae of the category
             required:
-                - uid
+                - id
                 - title
+                
+        user-categories:
+          type: object
+          properties:
+            count:
+              type: number
+              description: how many categories the user has
+            categories:
+              type: array
+              description: categories that the user has
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  imageUrl:
+                    type: string
 
         user:
             type: object
@@ -51,11 +70,10 @@ components:
                     type: string
                 
             required:
-                - uid
+                - id
                 - email
                 - categories
                 - nickname
-                - password
                 
         user-register:
             type: object
@@ -81,7 +99,7 @@ components:
                     type: string
                 
             required:
-                - uid
+                - id
                 - email
                 - categories
                 - nickname
@@ -260,3 +278,26 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/user"
+                                
+                                
+    /v1/users/{id}/categories:
+        get:
+            description: "getting useers categoreies"
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema: 
+                        type: string
+                        
+                        
+                    
+            responses: 
+              "200":
+                description: "returns categories that user specified in registration"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/user-categories"
+                    
+                    

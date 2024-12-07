@@ -4,6 +4,7 @@
 
 namespace ya_challenge {
 
-void AppendRegisterUser(userver::components::ComponentList& component_list);
+void AppendGetRankings(userver::components::ComponentList& component_list);
 
 }
+  

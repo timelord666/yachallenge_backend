@@ -328,30 +328,54 @@ paths:
                 content:
                   application/json:
                     schema:
-                      $ref: "#/components/schemas/user-categories"
-                      
-                      
-                      
-                      
-                      
-                    
-                    
-    /v1/users/{id}/challenges:
-        get:
-            description: "getting useers challenges"
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema: 
-                        type: string
-                        
-                        
-                    
-            responses: 
-              "200":
-                description: "returns challenges that user completed"
+                        $ref: '#/components/schemas/user'
+
+    /v1/users/{userUid}/challenges/{challengeId}:
+    put:
+        description: "Mark a challenge as completed for a specific user"
+        parameters:
+            - name: userUid
+              in: path
+              required: true
+              schema:
+                type: string
+              description: "Unique identifier of the user"
+            - name: challengeId
+              in: path
+              required: true
+              schema:
+                type: string
+              description: "Unique identifier of the challenge"
+        responses:
+            "200":
+                description: "Challenge marked as completed"
                 content:
-                  application/json:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/completedChallenge"
+            "400":
+                description: "Invalid request parameters"
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/error"
+            "404":
+                description: "User or Challenge not found"
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/error"
+        requestBody:
+            description: "Request body for completing a challenge"
+            required: true
+            content:
+                application/json:
                     schema:
-                      $ref: "#/components/schemas/user-challenges"
+                        type: object
+                        properties:
+                            score:
+                                type: number
+                                description: "Score for completing the challenge"
+                                example: 10
+                        required:
+                            - score

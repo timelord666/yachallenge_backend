@@ -13,9 +13,9 @@
 #include "handlers/v1/users/view.hpp"
 #include "handlers/v1/users/challenges/view.hpp"
 #include "handlers/v1/users/categories/view.hpp"
+#include "handlers/v1/complate-challenge/view.hpp"
 #include "hello.hpp"
 #include "handlers/v1/login/login.hpp"
-#include "handlers/v1/complate-challange/view.hpp"
 
 
 int main(int argc, char* argv[]) {
@@ -40,6 +40,6 @@ int main(int argc, char* argv[]) {
   ya_challenge::AppendGetCategories(component_list);
   ya_challenge::AppendGetCompleted(component_list);
 
-  ya_challenge::AppendCompletedChallange(component_list);
+  ya_challenge::AppendCompletedChallenge(component_list);
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

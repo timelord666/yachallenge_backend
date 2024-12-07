@@ -217,9 +217,9 @@ paths:
                     schema:
                         $ref: '#/components/schemas/user'
 
-    /v1/users/{userUid}/completed-challenges:
-    get:
-        description: "Get completed challenges for a user"
+    /v1/users/{userUid}/challenges/{challengeId}:
+    put:
+        description: "Mark a challenge as completed for a specific user"
         parameters:
             - name: userUid
               in: path
@@ -227,20 +227,45 @@ paths:
               schema:
                 type: string
               description: "Unique identifier of the user"
+            - name: challengeId
+              in: path
+              required: true
+              schema:
+                type: string
+              description: "Unique identifier of the challenge"
         responses:
             "200":
-                description: "List of completed challenges"
+                description: "Challenge marked as completed"
                 content:
                     application/json:
                         schema:
-                            type: array
-                            items:
-                                $ref: "#/components/schemas/completedChallenge"
-            "404":
-                description: "User not found"
+                            $ref: "#/components/schemas/completedChallenge"
+            "400":
+                description: "Invalid request parameters"
                 content:
                     application/json:
                         schema:
                             $ref: "#/components/schemas/error"
+            "404":
+                description: "User or Challenge not found"
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/error"
+        requestBody:
+            description: "Request body for completing a challenge"
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            score:
+                                type: number
+                                description: "Score for completing the challenge"
+                                example: 10
+                        required:
+                            - score
+
 
 

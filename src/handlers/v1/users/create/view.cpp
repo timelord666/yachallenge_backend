@@ -32,6 +32,7 @@ class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
       userver::server::request::RequestContext&) const override {
     auto request_body =
         userver::formats::json::FromString(request.RequestBody());
+    namespace pg = userver::storages::postgres;
     auto email = request_body["email"].As<std::optional<std::string>>();
     auto nickname = request_body["nickname"].As<std::optional<std::string>>();
     auto password = request_body["password"].As<std::optional<std::string>>();
@@ -46,15 +47,17 @@ class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
 
     auto hashed_password = userver::crypto::hash::Sha256(password.value());
 
-    auto result = pg_cluster_->Execute(
-        userver::storages::postgres::ClusterHostType::kMaster,
-        "INSERT INTO yaChallenge.users(email, password, "
-        "nickname, categories, androidToken) "
-        "VALUES($1, $2, $3, $4, $5)"
-        "ON CONFLICT DO NOTHING "
-        "RETURNING id",
-        email.value(), hashed_password, nickname, categories,
-        token.value());
+    auto txn = pg_cluster_->Begin(
+        pg::TransactionOptions(pg::IsolationLevel::kReadCommitted));
+
+    auto result =
+        txn.Execute(
+                     "INSERT INTO yaChallenge.users(email, password, "
+                     "nickname, androidToken) "
+                     "VALUES($1, $2, $3, $4)"
+                     "ON CONFLICT DO NOTHING "
+                     "RETURNING id",
+                     email.value(), hashed_password, nickname, token);
 
     if (result.IsEmpty()) {
       auto& response = request.GetHttpResponse();
@@ -64,6 +67,13 @@ class RegisterUser final : public userver::server::handlers::HttpHandlerBase {
 
     userver::formats::json::ValueBuilder response;
     response["id"] = result.AsSingleRow<std::string>();
+
+    auto category_result = txn.Execute(
+        "INSERT INTO yaChallenge.userCategories (categoryId, userId) "
+        "SELECT UNNEST($1::text[]), $2",
+        categories.value(), result.AsSingleRow<std::string>());
+
+    txn.Commit();    
 
     return userver::formats::json::ToString(response.ExtractValue());
   }

@@ -30,7 +30,6 @@ int main(int argc, char* argv[]) {
   ya_challenge::AppendHello(component_list);
   ya_challenge::AppendRegisterUser(component_list);
 
-  ya_challenge::AppendGetCategories(component_list);
   ya_challenge::AppendGetChallenges(component_list);
 
   ya_challenge::AppendGetUserCategories(component_list);

@@ -24,9 +24,13 @@ components:
                 title:
                     type: string
                     description: The title of the category.
+                imageUrl:
+                    type: string
+                    description: Image url of the category.
             required:
                 - uid
                 - title
+                - imageUrl
 
         user:
             type: object

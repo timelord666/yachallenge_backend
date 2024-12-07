@@ -91,8 +91,8 @@ components_manager:
             method: GET
             task_processor: main-task-processor
         
-        handler-complete-challenge:
-            path: /users/{userId}/challenges/{challengeId}
+        handler-v1-complete-challenge:
+            path: /v1/users/{userId}/challenges/{challengeId}
             method: PUT
             task_processor: main-task-processor
 

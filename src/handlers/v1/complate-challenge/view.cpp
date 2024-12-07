@@ -16,7 +16,7 @@ namespace ya_challenge{
     namespace {
         class CompleteChallengeHandler final : public userver::server::handlers::HttpHandlerBase {
         public:
-            static constexpr string_view kName = "handler-complete-challenge";
+            static constexpr string_view kName = "handler-v1-complete-challenge";
 
             CompleteChallengeHandler(const userver::components::ComponentConfig& config,
                 const userver::components::ComponentContext& component_context)
@@ -44,7 +44,7 @@ namespace ya_challenge{
                     // request.SetResponseStatus(userver::server::http::HttpStatus::kNotFound);
                     // return userver::formats::json::ValueBuilder{{"error", "User not found"}}.ExtractValue().ToString();
                     response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
-                    return {};
+                    return {"no"};
                 }
 
                 auto challenge_exists = pg_cluster_->Execute(

@@ -39,5 +39,7 @@ int main(int argc, char* argv[]) {
   ya_challenge::AppendLoginUser(component_list);
   ya_challenge::AppendGetCategories(component_list);
   ya_challenge::AppendGetCompleted(component_list);
+
+  ya_challenge::AppendCompletedChallange(component_list);
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

@@ -40,8 +40,12 @@ components:
                 email:
                     type: string
 
+
+
                 nickname:
                     type: string
+
+
 
                 androidToken:
                     type: string
@@ -52,6 +56,36 @@ components:
                 - categories
                 - nickname
                 - password
+                
+        user-register:
+            type: object
+            properties:
+                id:
+                    type: string
+
+                email:
+                    type: string
+
+                categories:
+                    type: array
+                    items:
+                        type: string
+
+                nickname:
+                    type: string
+
+                password:
+                    type: string
+
+                androidToken:
+                    type: string
+                
+            required:
+                - uid
+                - email
+                - categories
+                - nickname
+                - password                
         
         challenge:
             type: object

@@ -16,6 +16,7 @@ struct Challenge {
   string description;
   string category;
   long int score;
+  string categoryTitle;
 };
 
 userver::formats::json::Value Serialize(

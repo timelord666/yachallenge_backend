@@ -40,6 +40,8 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/models/completedChallenges.cpp
     src/models/userCategories.hpp
     src/models/userCategories.cpp
+    src/handlers/v1/admin/add-challenge/view.cpp
+    src/handlers/v1/admin/add-challenge/view.hpp
     src/handlers/v1/users/view.cpp
     src/handlers/v1/users/view.hpp
     src/handlers/v1/users/rankings/view.cpp

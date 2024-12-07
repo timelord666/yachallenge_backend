@@ -95,6 +95,11 @@ components_manager:
             path: /v1/users/rankings/{page}
             method: GET
             task_processor: main-task-processor
+
+        handler-v1-admin-add-challenge:
+            path: /v1/admin/add-challenge
+            method: POST
+            task_processor: main-task-processor
         
         postgres-db-1:
             dbconnection: $dbconnection

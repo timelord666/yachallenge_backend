@@ -14,6 +14,7 @@
 #include "handlers/v1/users/challenges/view.hpp"
 #include "handlers/v1/users/rankings/view.hpp"
 #include "handlers/v1/users/categories/view.hpp"
+#include "handlers/v1/admin/add-challenge/view.hpp"
 #include "hello.hpp"
 #include "handlers/v1/login/login.hpp"
 
@@ -30,6 +31,9 @@ int main(int argc, char* argv[]) {
 
   ya_challenge::AppendHello(component_list);
 
+  //admin
+  ya_challenge::AppendAddChallenge(component_list);
+  
   //login-register
   ya_challenge::AppendRegisterUser(component_list);
   ya_challenge::AppendLoginUser(component_list);

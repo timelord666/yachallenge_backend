@@ -7,18 +7,18 @@ ON CONFLICT DO NOTHING;
 
 -- 2. Insert Categories
 INSERT INTO yaChallenge.categories (imageUrl, title) VALUES
-('http://example.com/img/sport.png', 'Sport'),
-('http://example.com/img/music.png', 'Music'),
-('http://example.com/img/technology.png', 'Technology'),
-('http://example.com/img/art.png', 'Art'),
-('http://example.com/img/science.png', 'Science')
+('https://cataas.com/cat', 'Sport'),
+('https://cataas.com/cat', 'Music'),
+('https://cataas.com/cat', 'Technology'),
+('https://cataas.com/cat', 'Art'),
+('https://cataas.com/cat', 'Science')
 ON CONFLICT DO NOTHING;
 
 -- 3. Insert Challenges
 -- Assigning challenges to the new categories
 INSERT INTO yaChallenge.challenges (title, imageUrl, description, category, score)
 SELECT 'Run 5km',
-       'http://example.com/img/run5km.png',
+       'https://cataas.com/cat',
        'Run a total of 5 kilometers in a single session',
        (SELECT id FROM yaChallenge.categories WHERE title='Sport'),
        50
@@ -26,7 +26,7 @@ ON CONFLICT DO NOTHING;
 
 INSERT INTO yaChallenge.challenges (title, imageUrl, description, category, score)
 SELECT 'Meditate 10 minutes',
-       'http://example.com/img/meditate.png',
+       'https://cataas.com/cat',
        'Spend 10 minutes practicing mindfulness',
        (SELECT id FROM yaChallenge.categories WHERE title='Art'),
        30
@@ -34,7 +34,7 @@ ON CONFLICT DO NOTHING;
 
 INSERT INTO yaChallenge.challenges (title, imageUrl, description, category, score)
 SELECT 'Save $100',
-       'http://example.com/img/save100.png',
+       'https://cataas.com/cat',
        'Put aside $100 into your savings account',
        (SELECT id FROM yaChallenge.categories WHERE title='Technology'),
        40
@@ -42,7 +42,7 @@ ON CONFLICT DO NOTHING;
 
 INSERT INTO yaChallenge.challenges (title, imageUrl, description, category, score)
 SELECT 'Do 30 push-ups',
-       'http://example.com/img/pushups.png',
+       'https://cataas.com/cat',
        'Complete 30 push-ups in one go',
        (SELECT id FROM yaChallenge.categories WHERE title='Sport'),
        60
@@ -50,7 +50,7 @@ ON CONFLICT DO NOTHING;
 
 INSERT INTO yaChallenge.challenges (title, imageUrl, description, category, score)
 SELECT 'Drink 2L of water',
-       'http://example.com/img/water.png',
+       'https://cataas.com/cat',
        'Consume at least 2 liters of water in a day',
        (SELECT id FROM yaChallenge.categories WHERE title='Science'),
        20

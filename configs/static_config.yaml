@@ -101,6 +101,11 @@ components_manager:
             method: POST
             task_processor: main-task-processor
         
+        handler-v1-admin-add-category:
+            path: /v1/admin/add-category
+            method: POST
+            task_processor: main-task-processor
+        
         postgres-db-1:
             dbconnection: $dbconnection
             dbconnection#env: DB_CONNECTION

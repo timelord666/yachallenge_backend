@@ -14,11 +14,11 @@
 namespace ya_challenge {
 
 namespace {
-class AddChallenge final : public userver::server::handlers::HttpHandlerBase {
+class AddCategory final : public userver::server::handlers::HttpHandlerBase {
 public:
-    static constexpr std::string_view kName = "handler-v1-admin-add-challenge";
+    static constexpr std::string_view kName = "handler-v1-admin-add-category";
 
-    AddChallenge(const userver::components::ComponentConfig& config,
+    AddCategory(const userver::components::ComponentConfig& config,
                 const userver::components::ComponentContext& component_context)
         : HttpHandlerBase(config, component_context),
             pg_cluster_(
@@ -33,33 +33,19 @@ public:
 	auto request_body = userver::formats::json::FromString(request.RequestBody());
 	auto title = request_body["title"].As<std::optional<std::string>>();
 	auto imageUrl = request_body["imageUrl"].As<std::optional<std::string>>();
-	auto description = request_body["description"].As<std::optional<std::string>>();
-	auto category = request_body["category"].As<std::optional<std::string>>();
-    	auto score = request_body["score"].As<std::optional<int>>();
 
-        if (!title || !description || !score || !category) {
+        if (!title) {
 		auto& response = request.GetHttpResponse();
 		response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
 		return {};
     	}
+
         auto result = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
-            "WITH category_id AS ( "
-    		"SELECT id "
-    	        "FROM yaChallenge.categories "
-    	        "WHERE title = $4 "
-	    ") "
-	    "INSERT INTO yaChallenge.challenges (title, imageUrl, description, category, score) "
-	        "SELECT "
-    	        "$1, "
-                "$2, "
-                "$3, "
-                "category_id.id, "
-                "$5 "
-	    "FROM category_id "
-	    "WHERE category_id.id IS NOT NULL "
-	    "ON CONFLICT DO NOTHING "
-	    "RETURNING id", title, imageUrl, description, category, score
+	    "INSERT INTO yaChallenge.categories (title, imageUrl) "
+	    "VALUES($1, $2) "
+	    "ON CONFLICT (title) DO NOTHING "
+	    "RETURNING id", title, imageUrl
         );
 	if(result.IsEmpty()){
 		auto& response = request.GetHttpResponse();
@@ -77,8 +63,8 @@ private:
 
 }
 
-void AppendAddChallenge(userver::components::ComponentList& component_list) {
-    component_list.Append<AddChallenge>();
+void AppendAddCategory(userver::components::ComponentList& component_list) {
+    component_list.Append<AddCategory>();
 }
 
 }

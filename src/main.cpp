@@ -15,6 +15,7 @@
 #include "handlers/v1/users/categories/view.hpp"
 #include "hello.hpp"
 #include "handlers/v1/login/login.hpp"
+#include "handlres/v1/complate-challange/view.hpp"
 
 
 int main(int argc, char* argv[]) {

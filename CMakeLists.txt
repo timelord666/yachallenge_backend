@@ -50,6 +50,13 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/handlers/v1/users/challenges/view.hpp
     src/handlers/v1/get-categories/view.hpp
     src/handlers/v1/get-categories/view.cpp
+
+    src/models/challenge.hpp
+    src/models/challenge.cpp
+
+    src/handlers/v1/get-challenges/view.hpp
+    src/handlers/v1/get-challenges/view.cpp
+    
     src/handlers/v1/login/login.cpp
     src/handlers/v1/login/login.cpp
 )

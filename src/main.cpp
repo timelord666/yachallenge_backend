@@ -8,6 +8,7 @@
 #include <userver/utils/daemon_run.hpp>
 
 #include "handlers/v1/get-categories/view.hpp"
+#include "handlers/v1/get-challenges/view.hpp"
 #include "handlers/v1/users/create/view.hpp"
 #include "handlers/v1/users/view.hpp"
 #include "handlers/v1/users/challenges/view.hpp"
@@ -27,7 +28,6 @@ int main(int argc, char* argv[]) {
           .Append<userver::components::Postgres>("postgres-db-1")
           .Append<userver::clients::dns::Component>();
 
-
   ya_challenge::AppendHello(component_list);
 
   //login-register
@@ -42,6 +42,7 @@ int main(int argc, char* argv[]) {
 
   //app-data
   ya_challenge::AppendGetCategories(component_list);
+  ya_challenge::AppendGetChallenges(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

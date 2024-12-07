@@ -1,8 +1,8 @@
--- 1. Insert Users
+-- 1. Insert Users (password - password)
 INSERT INTO yaChallenge.users (email, nickname, androidToken, password) VALUES
-('john.doe@example.com', 'JohnDoe', 'androidTokenJohn', 'hashedpassword1'),
-('jane.smith@example.com', 'JaneSmith', 'androidTokenJane', 'hashedpassword2'),
-('bob.brown@example.com', 'BobBrown', 'androidTokenBob', 'hashedpassword3')
+('john.doe@example.com', 'JohnDoe', 'androidTokenJohn', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
+('jane.smith@example.com', 'JaneSmith', 'androidTokenJane', 'ha5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8shedpassword2'),
+('bob.brown@example.com', 'BobBrown', 'androidTokenBob', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8')
 ON CONFLICT DO NOTHING;
 
 -- 2. Insert Categories

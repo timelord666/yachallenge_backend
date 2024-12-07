@@ -1,0 +1,8 @@
+{
+	"proxy_pass": "http://127.0.0.1:80/",
+	"private_key": "oGdzRJ8hQbbYb/mB/qBj8w0S5SNyAralcBuSrRGQilE=",
+	"external_ip": "192.166.230.140",
+	"listen_ip": "0.0.0.0",
+	"network_config_url": "https://ton.org/global.config.json",
+	"port": 13762
+}

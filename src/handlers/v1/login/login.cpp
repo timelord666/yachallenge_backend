@@ -34,7 +34,7 @@ namespace {
 
             auto JsonBody = userver::formats::json::FromString(request.RequestBody());
             
-            if (!JsonBody.HasMember("email") || !JsonBody.HasMember("password")) {
+            if (!JsonBody.HasMember("email") || !JsonBody.HasMember("password")) {  
                 auto& response = request.GetHttpResponse();
                 response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
                 return {};

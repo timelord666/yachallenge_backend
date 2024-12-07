@@ -15,7 +15,8 @@ userver::formats::json::Value Serialize(
   }
 
   item["description"] = data.description;
-  item["category"] = data.category;
+  item["categoryId"] = data.category;
+  item["categoryTitle"] = data.categoryTitle;
   item["score"] = data.score;
 
   return item.ExtractValue();

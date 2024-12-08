@@ -174,7 +174,19 @@ components:
                   score:
                       type: number
                   imageUrl:
-                      type: string          
+                      type: string    
+
+        user-rank:
+          type: object
+          properties:
+            rank:
+              type: number
+              description: user rank
+            nickname:
+              type: string
+            score:
+              type: number
+              description: user score  
 
 
 paths:
@@ -334,6 +346,26 @@ paths:
                       
                       
                       
+    /v1/users/{id}/rank:
+        get:
+            description: "getting useers rank"
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema: 
+                        type: string
+                        
+                        
+                    
+            responses: 
+              "200":
+                  description: "returns user rank"
+                  content:
+                    application/json:
+                      schema:
+                        $ref: "#/components/schemas/user-rank"                     
+                        
                     
                     
     /v1/users/{id}/challenges:
@@ -355,3 +387,4 @@ paths:
                   application/json:
                     schema:
                       $ref: "#/components/schemas/user-challenges"
+     

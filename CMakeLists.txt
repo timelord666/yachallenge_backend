@@ -59,6 +59,9 @@ add_library(${PROJECT_NAME}_objs OBJECT
     
     src/handlers/v1/login/login.cpp
     src/handlers/v1/login/login.cpp
+
+    src/handlers/v1/users/rank/view.cpp
+    src/handlers/v1/users/rank/view.hpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

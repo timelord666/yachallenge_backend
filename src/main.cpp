@@ -16,6 +16,7 @@
 #include "handlers/v1/users/categories/view.hpp"
 #include "hello.hpp"
 #include "handlers/v1/login/login.hpp"
+#include "handlers/v1/users/rank/view.hpp"
 
 
 int main(int argc, char* argv[]) {
@@ -39,6 +40,7 @@ int main(int argc, char* argv[]) {
   ya_challenge::AppendGetProfile(component_list);
   ya_challenge::AppendGetCompleted(component_list);
   ya_challenge::AppendGetRankings(component_list);
+  ya_challenge::AppendGetRank(component_list);
 
   //app-data
   ya_challenge::AppendGetCategories(component_list);

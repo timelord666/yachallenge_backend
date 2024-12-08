@@ -60,6 +60,11 @@ components_manager:
             method: POST
             task_processor: main-task-processor
 
+        handler-update-user-by-id:
+            path: /v1/users/{id}
+            method: PUT
+            task_processor: main-task-processor
+
         handler-login-user:
             path: /v1/login
             method: POST

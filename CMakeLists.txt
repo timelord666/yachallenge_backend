@@ -65,6 +65,8 @@ add_library(${PROJECT_NAME}_objs OBJECT
     
     src/handlers/v1/login/login.cpp
     src/handlers/v1/login/login.cpp
+
+    src/lib/send-notification-task.cpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

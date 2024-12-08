@@ -34,6 +34,11 @@ components_manager:
 
         testsuite-support: {}
 
+        periodic-send-notifications:
+            task_processor: main-task-processor
+            interval: 1
+            max_concurrent: 1
+
         http-client:
             load-enabled: $is-testing
             fs-task-processor: fs-task-processor

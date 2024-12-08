@@ -36,6 +36,8 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/models/category.hpp
     src/models/user.hpp
     src/models/user.cpp
+    src/models/userStats.hpp
+    src/models/userStats.cpp
     src/models/completedChallenges.hpp
     src/models/completedChallenges.cpp
     src/models/userCategories.hpp

@@ -9,7 +9,7 @@
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 #include <userver/formats/serialize/common_containers.hpp>
-
+#include "../../../../models/userStats.hpp"
 
 namespace ya_challenge {
 
@@ -32,7 +32,7 @@ public:
     ) const override {
 
         auto& page = request.GetPathArg("page");
-        int pageNum = std::stoi(page) <= 0 ? 0 : std::stoi(page) - 1;
+        int pageNum = (page.empty() || std::stoi(page)<=0 ) ? 0 : std::stoi(page) - 1;
         auto result = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
       		"SELECT "
@@ -57,13 +57,11 @@ public:
 	if (result.IsEmpty()) {
                 return userver::formats::json::ToString(response.ExtractValue());
         }
+
+	auto users = result.AsContainer<std::vector<UserStats>>(userver::storages::postgres::kRowTag);
 	
-	for(const auto& row : result) {
-      	  userver::formats::json::ValueBuilder userElem;
-      	  userElem["nickname"] = row["nickname"].As<std::string>();
-      	  userElem["score"] = row["score"].As<int>();
-      	  response["users"].PushBack(std::move(userElem));
-    	}
+	response["users"]= users;
+
  	return userver::formats::json::ToString(response.ExtractValue());
     }
 

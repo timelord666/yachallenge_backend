@@ -418,17 +418,3 @@ paths:
                     application/json:
                         schema:
                             $ref: "#/components/schemas/error"
-        requestBody:
-            description: "Request body for completing a challenge"
-            required: true
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            score:
-                                type: number
-                                description: "Score for completing the challenge"
-                                example: 10
-                        required:
-                            - score

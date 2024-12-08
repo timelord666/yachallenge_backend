@@ -318,6 +318,34 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/user"
+        put:
+            description: "update user"
+            parameters:
+              - name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                        type: object
+                        properties:
+                            nickname:
+                                type: string
+                            email:
+                                type: string
+                            androidToken:
+                                type: string
+
+            responses:
+                "204":
+                    description: "User was updated"
+                "400":
+                    description: "Invalid request body"
+                        
                                 
                                 
     /v1/users/{id}/categories:

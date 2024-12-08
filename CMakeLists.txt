@@ -57,6 +57,9 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/handlers/v1/get-categories/view.hpp
     src/handlers/v1/get-categories/view.cpp
 
+    src/handlers/v1/users/update/view.cpp
+    src/handlers/v1/users/update/view.hpp
+
     src/models/challenge.hpp
     src/models/challenge.cpp
 

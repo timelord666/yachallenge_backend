@@ -14,6 +14,7 @@
 #include "handlers/v1/users/challenges/view.hpp"
 #include "handlers/v1/users/rankings/view.hpp"
 #include "handlers/v1/users/categories/view.hpp"
+#include "handlers/v1/complate-challenge/view.hpp"
 #include "handlers/v1/admin/add-challenge/view.hpp"
 #include "handlers/v1/admin/add-category/view.hpp"
 #include "handlers/v1/login/login.hpp"
@@ -43,6 +44,8 @@ int main(int argc, char* argv[]) {
   ya_challenge::AppendGetUserCategories(component_list);
   ya_challenge::AppendGetProfile(component_list);
   ya_challenge::AppendGetCompleted(component_list);
+
+  ya_challenge::AppendCompletedChallenge(component_list);
   ya_challenge::AppendGetRankings(component_list);
 
   //app-data

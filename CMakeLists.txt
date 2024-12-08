@@ -64,6 +64,8 @@ add_library(${PROJECT_NAME}_objs OBJECT
 
     src/handlers/v1/get-categories/view.hpp
     src/handlers/v1/get-categories/view.cpp
+    src/handlers/v1/complate-challenge/view.cpp
+    src/handlers/v1/complate-challenge/view.hpp
 
     src/handlers/v1/users/update/view.cpp
     src/handlers/v1/users/update/view.hpp
@@ -76,6 +78,8 @@ add_library(${PROJECT_NAME}_objs OBJECT
     
     src/handlers/v1/login/login.cpp
     src/handlers/v1/login/login.cpp
+
+
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

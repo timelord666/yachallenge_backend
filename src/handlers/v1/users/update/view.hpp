@@ -4,6 +4,6 @@
 
 namespace ya_challenge {
 
-void AppendGetCompleted(userver::components::ComponentList& component_list);
+void AppendUpdateUserById(userver::components::ComponentList& component_list);
 
 }

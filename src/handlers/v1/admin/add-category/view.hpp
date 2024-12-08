@@ -4,6 +4,6 @@
 
 namespace ya_challenge {
 
-void AppendGetCompleted(userver::components::ComponentList& component_list);
+void AppendAddCategory(userver::components::ComponentList& component_list);
 
 }

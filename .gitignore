@@ -16,3 +16,4 @@ Testing/
 Makefile.local
 .vs
 /third_party/userver/*
+tonutils-reverse-proxy-linux-amd64

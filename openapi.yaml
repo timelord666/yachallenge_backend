@@ -388,7 +388,7 @@ paths:
             parameters:
                 - name: page
                   in: path
-                  required: false
+                  required: true
                   schema:
                         type: string
 
@@ -446,38 +446,38 @@ paths:
                       $ref: "#/components/schemas/user-challenges"
           
     /v1/users/{userUid}/challenges/{challengeId}:
-    put:
-        description: "Mark a challenge as completed for a specific user"
-        parameters:
-            - name: userUid
-              in: path
-              required: true
-              schema:
-                type: string
-              description: "Unique identifier of the user"
-            - name: challengeId
-              in: path
-              required: true
-              schema:
-                type: string
-              description: "Unique identifier of the challenge"
-        responses:
-            "200":
-                description: "Challenge marked as completed"
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/completedChallenge"
-            "400":
-                description: "Invalid request parameters"
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/error"
-            "404":
-                description: "User or Challenge not found"
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/error"
+        put:
+            description: "Mark a challenge as completed for a specific user"
+            parameters:
+                - name: userUid
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                  description: "Unique identifier of the user"
+                - name: challengeId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                  description: "Unique identifier of the challenge"
+            responses:
+                "200":
+                    description: "Challenge marked as completed"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/completedChallenge"
+                "400":
+                    description: "Invalid request parameters"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/error"
+                "404":
+                    description: "User or Challenge not found"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/error"
      

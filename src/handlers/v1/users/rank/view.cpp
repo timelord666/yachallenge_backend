@@ -15,7 +15,7 @@ namespace ya_challenge {
 namespace {
 class GetRank final : public userver::server::handlers::HttpHandlerBase {
  public:
-  static constexpr std::string_view kName = "handler-v1-users-rankings";
+  static constexpr std::string_view kName = "handler-v1-users-rank";
 
   GetRank(const userver::components::ComponentConfig& config,
               const userver::components::ComponentContext& component_context)
@@ -29,46 +29,38 @@ class GetRank final : public userver::server::handlers::HttpHandlerBase {
       const userver::server::http::HttpRequest& request,
       userver::server::request::RequestContext&) const override {
     auto& user_id = request.GetPathArg("id");
-
-    int pages = 0;
-    bool user_not_found = true;
-    while(user_not_found) {
-      auto result = pg_cluster_->Execute(
-          userver::storages::postgres::ClusterHostType::kMaster,
-          "SELECT "
-          "u.nickname, "
-          "COALESCE(SUM(c.score), 0) AS score "
-          "FROM "
-          "yaChallenge.users u "
-          "LEFT JOIN "
-          "yaChallenge.completedChallenges cc ON u.id = cc.userId "
-          "LEFT JOIN "
-          "yaChallenge.challenges c ON cc.challengeId = c.id "
-          "GROUP BY "
-          "u.nickname "
-          "ORDER BY "
-          "score DESC "
-          "LIMIT 15 "
-          "OFFSET $1",
-          pages * 15);
-
-            
-    }
-
-    
+    // TODO: refator this to pagination
+    auto result = pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kMaster,
+        "SELECT "
+        "u.id, u.nickname, "
+        "COALESCE(SUM(c.score), 0) AS score "
+        "FROM "
+        "yaChallenge.users u "
+        "LEFT JOIN "
+        "yaChallenge.completedChallenges cc ON u.id = cc.userId "
+        "LEFT JOIN "
+        "yaChallenge.challenges c ON cc.challengeId = c.id "
+        "GROUP BY "
+        "u.id "
+        "ORDER BY "
+        "score DESC ");
 
     userver::formats::json::ValueBuilder response;
-    response["users"].Resize(0);
 
     if (result.IsEmpty()) {
       return userver::formats::json::ToString(response.ExtractValue());
     }
-
+    long long rank = 0;
     for (const auto& row : result) {
-      userver::formats::json::ValueBuilder userElem;
-      userElem["nickname"] = row["nickname"].As<std::string>();
-      userElem["score"] = row["score"].As<int>();
-      response["users"].PushBack(std::move(userElem));
+      rank++;
+      if (row["id"].As<std::string>() == user_id) {
+        
+        response["nickname"] = row["nickname"].As<std::string>();
+        response["score"] = row["score"].As<int>();
+        response["rank"] = rank;
+        return userver::formats::json::ToString(response.ExtractValue());
+      }
     }
     return userver::formats::json::ToString(response.ExtractValue());
   }

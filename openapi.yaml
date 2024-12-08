@@ -382,8 +382,7 @@ paths:
                   application/json:
                     schema:
                       $ref: "#/components/schemas/user-challenges"
-
-                      
+          
     /v1/users/{userUid}/challenges/{challengeId}:
     put:
         description: "Mark a challenge as completed for a specific user"

@@ -176,6 +176,16 @@ components:
                   imageUrl:
                       type: string          
 
+        user-rankings:
+          type: array
+          items:
+            type: object
+            properties:
+              score:
+                  type: number
+                    
+              nickname:
+                  type: string
 
 paths:
     /v1/categories:
@@ -328,8 +338,52 @@ paths:
                 content:
                   application/json:
                     schema:
-                        $ref: '#/components/schemas/user'
+                      $ref: "#/components/schemas/user-categories"
+                      
+                      
+                      
+    /v1/users/rankings/{page}:
+        get:
+            description: "Get user rankings for a specific page"
+            parameters:
+                - name: page
+                  in: path
+                  required: false
+                  schema:
+                        type: string
 
+            responses:
+              "200":
+                description: "Successfully got user rankings for the requested page"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/user-rankings"
+                 
+                      
+                    
+                    
+    /v1/users/{id}/challenges:
+        get:
+            description: "getting useers challenges"
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema: 
+                        type: string
+                        
+                        
+                    
+            responses: 
+              "200":
+                description: "returns challenges that user completed"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/user-challenges"
+
+                      
     /v1/users/{userUid}/challenges/{challengeId}:
     put:
         description: "Mark a challenge as completed for a specific user"

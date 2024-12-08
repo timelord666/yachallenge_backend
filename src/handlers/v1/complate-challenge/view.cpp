@@ -41,10 +41,8 @@ namespace ya_challenge{
 
                 if (user_exists.IsEmpty() || user_exists.AsSingleRow<int64_t>() == 0) {
                     auto& response = request.GetHttpResponse();
-                    // request.SetResponseStatus(userver::server::http::HttpStatus::kNotFound);
-                    // return userver::formats::json::ValueBuilder{{"error", "User not found"}}.ExtractValue().ToString();
                     response.SetStatus(userver::server::http::HttpStatus::kBadRequest);
-                    return {"no"};
+                    return {};
                 }
 
                 auto challenge_exists = pg_cluster_->Execute(
@@ -54,9 +52,6 @@ namespace ya_challenge{
                 if (user_exists.IsEmpty() || challenge_exists.AsSingleRow<int64_t>() == 0) {
                     auto& response = request.GetHttpResponse();
                     response.SetStatus(userver::server::http::HttpStatus::kNotFound);
-                    // response.SetBody(userver::formats::json::ValueBuilder{{"error", "Challenge not found"}}
-                    //                     .ExtractValue()
-                    //                     .ToString());
                     return {};
                 }
                 try {

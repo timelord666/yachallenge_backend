@@ -11,9 +11,8 @@
 #include <userver/engine/async.hpp>
 #include <userver/engine/task/cancel.hpp>
 
-
 #include <userver/clients/http/client.hpp>
-#include <userver/components/postgres.hpp>
+#include <userver/clients/http/component.hpp>
 #include <userver/storages/postgres/cluster.hpp>
 
 namespace my_service {
@@ -25,15 +24,13 @@ class MyPeriodicTaskComponent final
 
   MyPeriodicTaskComponent(const userver::components::ComponentConfig& config,
                           const userver::components::ComponentContext& context)
-      : LoggableComponentBase(config, context) {
-
-    pg_cluster_ =
-        &context.FindComponent<userver::components::Postgres>("postgres-db-1")
-             .GetCluster();
-
-    auto& http_client_ =
-        context.FindComponent<components::HttpClient>().GetHttpClient();
-    http_client_ = &http_client_factory.GetHttpClient();
+      : LoggableComponentBase(config, context),
+        http_client_{context.FindComponent<userver::components::HttpClient>()
+                         .GetHttpClient()},
+        pg_cluster_(
+            context
+                .FindComponent<userver::components::Postgres>("postgres-db-1")
+                .GetCluster()) {
 
     periodic_task_.Start(
         "periodic-send-notifications", std::chrono::seconds(1), [this]() {
@@ -80,16 +77,10 @@ class MyPeriodicTaskComponent final
     periodic_task_.Stop();
   }
 
-  static userver::components::ComponentConfig ParseConfig(
-      const userver::components::YamlConfig& yaml_config,
-      const userver::components::ComponentContext&) {
-    // Parse any custom config if needed
-    return userver::components::ComponentConfig{};
-  }
 
  private:
   userver::storages::postgres::Cluster* pg_cluster_{nullptr};
-  clients::http::Client& http_client_;
+  userver::clients::http::Client& http_client_;
   userver::utils::PeriodicTask periodic_task_;
 };
 

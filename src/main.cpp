@@ -16,7 +16,6 @@
 #include "handlers/v1/users/categories/view.hpp"
 #include "handlers/v1/admin/add-challenge/view.hpp"
 #include "handlers/v1/admin/add-category/view.hpp"
-#include "hello.hpp"
 #include "handlers/v1/login/login.hpp"
 #include "handlers/v1/users/update/view.hpp"
 
@@ -31,7 +30,6 @@ int main(int argc, char* argv[]) {
           .Append<userver::components::Postgres>("postgres-db-1")
           .Append<userver::clients::dns::Component>();
 
-  ya_challenge::AppendHello(component_list);
 
   //admin
   ya_challenge::AppendAddChallenge(component_list);

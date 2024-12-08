@@ -26,34 +26,42 @@ userver_setup_environment()
 
 # Common sources
 add_library(${PROJECT_NAME}_objs OBJECT
-    src/hello.hpp
-    src/hello.cpp
     src/handlers/v1/users/create/view.hpp
     src/handlers/v1/users/create/view.cpp
-    src/lib/uuids.hpp
-    src/lib/uuids.cpp
+    
     src/models/category.cpp
     src/models/category.hpp
+    
     src/models/user.hpp
     src/models/user.cpp
+    
     src/models/userStats.hpp
     src/models/userStats.cpp
+    
     src/models/completedChallenges.hpp
     src/models/completedChallenges.cpp
+    
     src/models/userCategories.hpp
     src/models/userCategories.cpp
+    
     src/handlers/v1/admin/add-challenge/view.cpp
     src/handlers/v1/admin/add-challenge/view.hpp
+    
     src/handlers/v1/admin/add-category/view.cpp
     src/handlers/v1/admin/add-category/view.hpp
+    
     src/handlers/v1/users/view.cpp
     src/handlers/v1/users/view.hpp
+    
     src/handlers/v1/users/rankings/view.cpp
     src/handlers/v1/users/rankings/view.hpp
+    
     src/handlers/v1/users/categories/view.cpp
     src/handlers/v1/users/categories/view.hpp
+    
     src/handlers/v1/users/challenges/view.cpp
     src/handlers/v1/users/challenges/view.hpp
+
     src/handlers/v1/get-categories/view.hpp
     src/handlers/v1/get-categories/view.cpp
 
@@ -78,22 +86,14 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_objs)
 
 
 # Unit Tests
-add_executable(${PROJECT_NAME}_unittest
-    src/hello_test.cpp
-)
-target_link_libraries(${PROJECT_NAME}_unittest PRIVATE ${PROJECT_NAME}_objs userver::utest)
-add_google_tests(${PROJECT_NAME}_unittest)
 
 
 # Benchmarks
-add_executable(${PROJECT_NAME}_benchmark
-    src/hello_benchmark.cpp
-)
-target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME}_objs userver::ubench)
-add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
+
 
 
 # Functional Tests
+
 userver_testsuite_add_simple()
 
 
